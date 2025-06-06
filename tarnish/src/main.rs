@@ -1,61 +1,58 @@
-#[allow(dead_code)]
-#[derive(Debug)]
+use serde::Serialize;
+
+#[derive(Serialize)]
 struct Vec2 {
-  x: f64,
-  y: f64,
+    x: f64,
+    y: f64,
 }
 
-#[allow(dead_code)]
-#[derive(Debug)]
+#[derive(Serialize)]
 struct Line {
-  point: Vec2,
-  norm: Vec2,
+    point: Vec2,
+    norm: Vec2,
 }
 
-#[allow(dead_code)]
-#[derive(Debug)]
+#[derive(Serialize)]
 struct Rect {
-  ll: Vec2,  // Lower left.
-  ur: Vec2,  // Upper right.
+    ll: Vec2, // Lower left.
+    ur: Vec2, // Upper right.
 }
 
-#[allow(dead_code)]
-#[derive(Debug)]
+#[derive(Serialize)]
 struct Circle {
-  center: Vec2,
-  radius: f64,
+    center: Vec2,
+    radius: f64,
 }
 
-#[allow(dead_code)]
-#[derive(Debug)]
+#[derive(Serialize)]
 struct Polyline {
-  v: Vec<Vec2>,
+    v: Vec<Vec2>,
 }
 
+#[derive(Serialize)]
 #[allow(dead_code)]
-#[derive(Debug)]
 enum Shape {
-  Rect(Rect),
-  Circle(Circle),
-  Polyline(Polyline),
+    Rect(Rect),
+    Circle(Circle),
+    Polyline(Polyline),
 }
 
-#[allow(dead_code)]
-#[derive(Debug)]
+#[derive(Serialize)]
 struct Part {
-  outline: Shape,
-  cutouts: Vec<Shape>,
-  bendlines: Vec<Line>,
+    outline: Shape,
+    cutouts: Vec<Shape>,
+    bendlines: Vec<Line>,
 }
 
 fn main() {
     let p = Part {
-      outline: Shape::Rect(Rect{
-        ll: Vec2{x: 0.0, y: 0.0},
-        ur: Vec2{x: 100.0, y: 100.0},
-      }),
-      cutouts: Vec::new(),
-      bendlines: Vec::new(),
+        outline: Shape::Rect(Rect {
+            ll: Vec2 { x: 0.0, y: 0.0 },
+            ur: Vec2 { x: 100.0, y: 100.0 },
+        }),
+        cutouts: Vec::new(),
+        bendlines: Vec::new(),
     };
-    println!("part {:#?}", p);
+    let serialized = serde_json::to_string(&p).unwrap();
+    println!("serialized = {}", serialized);
 }
