@@ -1,4 +1,6 @@
 use serde::Serialize;
+use std::fs::File;
+use std::io::prelude::*;
 
 #[derive(Serialize)]
 struct Vec2 {
@@ -44,7 +46,7 @@ struct Part {
     bendlines: Vec<Line>,
 }
 
-fn main() {
+fn main() -> std::io::Result<()> {
     let p = Part {
         outline: Shape::Rect(Rect {
             ll: Vec2 { x: 0.0, y: 0.0 },
@@ -54,5 +56,8 @@ fn main() {
         bendlines: Vec::new(),
     };
     let serialized = serde_json::to_string(&p).unwrap();
+    let mut file = File::create("out.json")?;
+    write!(file, "{}", serialized)?;
     println!("serialized = {}", serialized);
+    Ok(())
 }
