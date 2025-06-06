@@ -1,3 +1,5 @@
+mod dxf;
+
 use serde::Serialize;
 use std::fs::File;
 use std::io::prelude::*;
@@ -57,7 +59,7 @@ fn main() -> std::io::Result<()> {
     };
     let serialized = serde_json::to_string(&p).unwrap();
     let mut file = File::create("out.json")?;
-    write!(file, "{}", serialized)?;
+    write!(file, "{}{}", dxf::HEADER, serialized)?;
     println!("serialized = {}", serialized);
     Ok(())
 }
