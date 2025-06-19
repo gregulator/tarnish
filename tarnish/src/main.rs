@@ -26,8 +26,21 @@ fn main() -> std::io::Result<()> {
         },
     };
     println!("{}", dxf::gen_header(extent));
+    println!("{}", dxf::TABLES);
     println!("{}", dxf::BLOCKS);
-    println!("{}", dxf::ENTITIES);
+    println!("{}", dxf::ENTITIES_HEADER);
+    println!("{}", dxf::gen_circle(geom::Circle{
+      center: geom::Vec2{x: 0.0, y: 0.0},
+      radius: 200.0,
+    }));
+    println!("{}", dxf::gen_circle(geom::Circle{
+      center: geom::Vec2{x: 0.0, y: 0.0},
+      radius: 100.0,
+    }));
+    println!("{}", dxf::ENTITIES_FOOTER);
     println!("{}", dxf::FOOTER);
+    //println!("{}", dxf::gen_header(extent));
+    //println!("{}", dxf::EMPTY2);
+
     Ok(())
 }

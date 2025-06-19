@@ -4,116 +4,89 @@ use crate::geom;
 
 pub fn gen_header(extent: geom::Bounds2) -> std::string::String {
     return format!(
-        "999
+        "   999
 CREATED BY GREG PRISAMENT USING TARNISH (https://github.com/gregulator/tarnish)
-999
+  999
 --- HEADER SECTION ---
-0
+  0
 SECTION
-2
+  2
 HEADER
-0
-9
+  9
 $ACADVER
-1
+  1
 AC1006
-9
+  9
 $INSBASE
-10
+  10
 0.0
-20
+  20
 0.0
-30
+  30
 0.0
-9
+  9
 $EXTMIN
-10
+  10
 {:.1}
-20
+  20
 {:.1}
-9
-$EXTMAX
-10
-{:.1}
-20
-{:.1}
+  30
 0
-ENDSEC
-",
+  9
+$EXTMAX
+  10
+{:.1}
+  20
+{:.1}
+  30
+0
+  0
+ENDSEC",
         extent.min.x, extent.min.y, extent.max.x, extent.max.y
     );
 }
 
-pub const FOOTER: &str = "999
---- END SECTION ---
-0
-EOF
-";
-
-pub const BLOCKS: &str = "999
---- BLOCKS SECTION ---
-0
-SECTION
-2
-BLOCKS
-0
-ENDSEC
-";
-
-pub const ENTITIES: &str = "999
+pub const ENTITIES_HEADER: &str = "999
 --- ENTITIES SECTION ---
 0
 SECTION
 2
-ENTITIES
-0
-ENDSEC
-";
+ENTITIES";
 
-pub const MIN_EXAMPLE: &str = "999
-DXF created by Eric Roger
+pub fn gen_circle(circle: geom::Circle) -> std::string::String {
+    return format!(
+  "   999
+--- CIRLCE AT ({:.3}, {:.3}) with radius {} ---
+  0
+CIRCLE
+  5
+4E
+  100
+AcDbEntity
+  8
 0
-SECTION
-2
-HEADER
-9
-$ACADVER
-1
-AC1006
-9
-$INSBASE
-10
-0.0
-20
-0.0
-30
-0.0
-9
-$EXTMIN
-10
-0.0
-20
-0.0
-9
-$EXTMAX
-10
-1000.0
-20
-1000.0
-9
-$LINMIN
-10
-0.0
-20
-0.0
-9
-$LINMAX
-10
-1000.0
-20
-1000.0
-0
-ENDSEC
+  6
+ByLayer
+ 62
+256
+  370
+-1
+  100
+AcDbCircle
+ 10
+{:.3}
+ 20
+{:.3}
+ 40
+{:.3}", circle.center.x, circle.center.y, circle.radius, circle.center.x, circle.center.y, circle.radius);
+}
+
+pub const ENTITIES_FOOTER: &str = "  0
+ENDSEC";
+
+// Table section. Currently has 1 line type and 1 layer.
+pub const TABLES: &str = "999
+--- TABLES SECTION ---
 0
 SECTION
 2
@@ -157,116 +130,60 @@ LAYER
 6
 CONTINUOUS
 0
-LAYER
-2
-2
-70
-64
-62
-7
-6
-CONTINUOUS
-0
 ENDTAB
 0
-TABLE
-2
-STYLE
-70
+ENDSEC";
+
+pub const FOOTER: &str = "999
+--- END SECTION ---
 0
-0
-ENDTAB
-0
-ENDSEC
+EOF";
+
+pub const BLOCKS: &str = "999
+--- BLOCKS SECTION ---
 0
 SECTION
 2
 BLOCKS
 0
-ENDSEC
+ENDSEC";
+
+pub const ENTITIES: &str = "999
+--- ENTITIES SECTION ---
 0
 SECTION
 2
 ENTITIES
 0
-3DFACE
-8
-1
-62
-1
-10
--0.5
-20
--0.5
-30
--0.5
-11
--0.5
-21
-0.5
-31
--0.5
-12
-0.5
-22
-0.5
-32
--0.5
-13
-0.5
-23
--0.5
-33
--0.5
+ENDSEC";
+
+pub const ENTITIES_WITH_CIRCLE: &str = "999
+--- ENTITIES SECTION W/ CIRCLE---
 0
-3DFACE
-8
-1
-62
-1
-10
--0.5
-20
--0.5
-30
--0.5
-11
-0.5
-21
--0.5
-31
--0.5
-12
+SECTION
+2
+ENTITIES
+  0
+CIRCLE
+  5
+4E
+  100
+AcDbEntity
+  8
 0
-22
--0.5
-32
-0.5
-13
-0
-23
--0.5
-33
-0.5
-0
-LINE
-8
-1
-62
-1
-10
-0
-20
--0.5
-30
-0.5
-11
-0
-21
-0.5
-31
--0.5
-0
-ENDSEC
-0
-EOF";
+  6
+ByLayer
+ 62
+256
+  370
+-1
+  100
+AcDbCircle
+ 10
+80.0
+ 20
+90.0
+ 40
+20.0
+  0
+ENDSEC";
