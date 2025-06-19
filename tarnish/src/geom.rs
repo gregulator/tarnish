@@ -19,6 +19,12 @@ pub struct Line {
 }
 
 #[derive(Serialize)]
+pub struct LineSeg {
+    pub p0: Vec2,
+    pub p1: Vec2,
+}
+
+#[derive(Serialize)]
 pub struct Rect {
     pub ll: Vec2, // Lower left.
     pub ur: Vec2, // Upper right.

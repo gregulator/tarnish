@@ -1113,6 +1113,43 @@ AcDbCircle
 {:.3}", circle.center.x, circle.center.y, circle.radius, circle.center.x, circle.center.y, circle.radius);
 }
 
+pub fn gen_bendline(line: geom::LineSeg) -> std::string::String {
+    let x0 = line.p0.x;
+    let x1 = line.p1.x;
+    let y0 = line.p0.y;
+    let y1 = line.p1.y;
+
+    return format!(
+  "   999
+--- DASHED LINE SEGMENT FROM ({}, {}) to ({}, {}) ---
+  0
+LINE
+  5
+4F
+100
+AcDbEntity
+  8
+0
+  6
+DASHED
+ 62
+  256
+370
+   -1
+100
+AcDbLine
+ 10
+{:.3}
+ 20
+{:.3}
+ 11
+{:.3}
+ 21
+{:.3}", x0, y0, x1, y1, 
+   x0, y0,
+   x1, y1);
+}
+
 pub fn gen_rect(rect: geom::Rect) -> std::string::String {
   // See https://damassets.autodesk.net/content/dam/autodesk/www/developer-network/platform-technologies/autocad-dxf-archive/acad_dxf_2006.pdf
   // 90: num vertices
