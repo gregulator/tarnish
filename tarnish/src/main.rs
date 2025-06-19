@@ -26,28 +26,37 @@ fn main() -> std::io::Result<()> {
     // write!(file, "{}{}", dxf::HEADER, serialized)?;
     //println!("serialized = {}", serialized);
     let extent = geom::Bounds2 {
-        min: geom::Vec2 { x: -200.0, y: -200.0 },
-        max: geom::Vec2 {
-            x: 200.0,
-            y: 200.0,
+        min: geom::Vec2 {
+            x: -200.0,
+            y: -200.0,
         },
+        max: geom::Vec2 { x: 200.0, y: 200.0 },
     };
     println!("{}", dxf::gen_header(extent));
     println!("{}", dxf::TABLES);
     println!("{}", dxf::BLOCKS);
     println!("{}", dxf::ENTITIES_HEADER);
-    println!("{}", dxf::gen_circle(geom::Circle{
-      center: geom::Vec2{x: 0.0, y: 0.0},
-      radius: 200.0,
-    }));
-    println!("{}", dxf::gen_rect(geom::Rect{
-      ll: geom::Vec2{x: 0.0, y: 0.0},
-      ur: geom::Vec2{x: 40.5, y: 60.5},
-    }));
-    println!("{}", dxf::gen_bendline(geom::LineSeg{
-      p0: geom::Vec2{x: 0.0, y: -200.0},
-      p1: geom::Vec2{x: 50.0, y: 200.0},
-    }));
+    println!(
+        "{}",
+        dxf::gen_circle(geom::Circle {
+            center: geom::Vec2 { x: 0.0, y: 0.0 },
+            radius: 200.0,
+        })
+    );
+    println!(
+        "{}",
+        dxf::gen_rect(geom::Rect {
+            ll: geom::Vec2 { x: 0.0, y: 0.0 },
+            ur: geom::Vec2 { x: 40.5, y: 60.5 },
+        })
+    );
+    println!(
+        "{}",
+        dxf::gen_bendline(geom::LineSeg {
+            p0: geom::Vec2 { x: 0.0, y: -200.0 },
+            p1: geom::Vec2 { x: 50.0, y: 200.0 },
+        })
+    );
     //println!("{}", dxf::gen_circle(geom::Circle{
     //  center: geom::Vec2{x: 0.0, y: 0.0},
     //  radius: 100.0,

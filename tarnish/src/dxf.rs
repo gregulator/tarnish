@@ -1087,7 +1087,7 @@ ENTITIES";
 
 pub fn gen_circle(circle: geom::Circle) -> std::string::String {
     return format!(
-  "   999
+        "   999
 --- CIRLCE AT ({:.3}, {:.3}) with radius {} ---
   0
 CIRCLE
@@ -1110,7 +1110,14 @@ AcDbCircle
  20
 {:.3}
  40
-{:.3}", circle.center.x, circle.center.y, circle.radius, circle.center.x, circle.center.y, circle.radius);
+{:.3}",
+        circle.center.x,
+        circle.center.y,
+        circle.radius,
+        circle.center.x,
+        circle.center.y,
+        circle.radius
+    );
 }
 
 pub fn gen_bendline(line: geom::LineSeg) -> std::string::String {
@@ -1120,7 +1127,7 @@ pub fn gen_bendline(line: geom::LineSeg) -> std::string::String {
     let y1 = line.p1.y;
 
     return format!(
-  "   999
+        "   999
 --- DASHED LINE SEGMENT FROM ({}, {}) to ({}, {}) ---
   0
 LINE
@@ -1145,23 +1152,23 @@ AcDbLine
  11
 {:.3}
  21
-{:.3}", x0, y0, x1, y1, 
-   x0, y0,
-   x1, y1);
+{:.3}",
+        x0, y0, x1, y1, x0, y0, x1, y1
+    );
 }
 
 pub fn gen_rect(rect: geom::Rect) -> std::string::String {
-  // See https://damassets.autodesk.net/content/dam/autodesk/www/developer-network/platform-technologies/autocad-dxf-archive/acad_dxf_2006.pdf
-  // 90: num vertices
-  // 70: polyline flag: 1=closed 128=plinegen
-  // 10, 20: X, Y coordinate repeated
+    // See https://damassets.autodesk.net/content/dam/autodesk/www/developer-network/platform-technologies/autocad-dxf-archive/acad_dxf_2006.pdf
+    // 90: num vertices
+    // 70: polyline flag: 1=closed 128=plinegen
+    // 10, 20: X, Y coordinate repeated
     let x0 = rect.ll.x;
     let x1 = rect.ur.x;
     let y0 = rect.ll.y;
     let y1 = rect.ur.y;
 
     return format!(
-  "   999
+        "   999
 --- RECTANGLE WITH BOUNDS ({}, {}) to ({}, {}) ---
   0
 LWPOLYLINE
@@ -1200,11 +1207,9 @@ AcDbPolyline
  10
 {:.3}
  20
-{:.3}", x0, y0, x1, y1, 
-   x0, y0,
-   x1, y0,
-   x1, y1,
-   x0, y1);
+{:.3}",
+        x0, y0, x1, y1, x0, y0, x1, y0, x1, y1, x0, y1
+    );
 }
 
 pub const ENTITIES_FOOTER: &str = "  0
