@@ -1,4 +1,12 @@
 // Run with: cargo run
+
+// TODO:
+// - Set units to MM (Done but SCS still checks)
+// - Bendlines
+// - Rectangles
+// - Rounded rectangles
+// - Bolt hole rings
+// - Gen handles
 mod dxf;
 mod geom;
 
@@ -21,22 +29,26 @@ fn main() -> std::io::Result<()> {
     let extent = geom::Bounds2 {
         min: geom::Vec2 { x: 0.0, y: 0.0 },
         max: geom::Vec2 {
-            x: 1000.0,
-            y: 1000.0,
+            x: 200.0,
+            y: 200.0,
         },
     };
     println!("{}", dxf::gen_header(extent));
     println!("{}", dxf::TABLES);
     println!("{}", dxf::BLOCKS);
     println!("{}", dxf::ENTITIES_HEADER);
-    println!("{}", dxf::gen_circle(geom::Circle{
-      center: geom::Vec2{x: 0.0, y: 0.0},
-      radius: 200.0,
+    //println!("{}", dxf::gen_circle(geom::Circle{
+    //  center: geom::Vec2{x: 0.0, y: 0.0},
+    //  radius: 200.0,
+    //}));
+    println!("{}", dxf::gen_rect(geom::Rect{
+      ll: geom::Vec2{x: 85.25, y: 47.5},
+      ur: geom::Vec2{x: 151.5, y: 97.0},
     }));
-    println!("{}", dxf::gen_circle(geom::Circle{
-      center: geom::Vec2{x: 0.0, y: 0.0},
-      radius: 100.0,
-    }));
+    //println!("{}", dxf::gen_circle(geom::Circle{
+    //  center: geom::Vec2{x: 0.0, y: 0.0},
+    //  radius: 100.0,
+    //}));
     println!("{}", dxf::ENTITIES_FOOTER);
     println!("{}", dxf::FOOTER);
     //println!("{}", dxf::gen_header(extent));
