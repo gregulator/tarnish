@@ -2,10 +2,11 @@
 
 // TODO:
 // - Set units to MM (Done but SCS still checks)
-// - Bendlines
 // - Rounded rectangles
 // - Bolt hole rings
-// - Gen handles
+// - Gen handles (not really necessary)
+// - Polygons
+// - Splines
 mod dxf;
 mod geom;
 
@@ -45,10 +46,10 @@ fn main() -> std::io::Result<()> {
     );
     println!(
         "{}",
-        dxf::gen_rect(geom::Rect {
-            ll: geom::Vec2 { x: 0.0, y: 0.0 },
-            ur: geom::Vec2 { x: 40.5, y: 60.5 },
-        })
+        dxf::gen_semicircle(geom::LineSeg {
+          p0: geom::Vec2 {x: 0.0, y: -190.0},
+          p1: geom::Vec2 {x: 0.0, y: 190.0}
+        }, 1.0)
     );
     println!(
         "{}",

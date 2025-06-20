@@ -1085,6 +1085,55 @@ SECTION
 2
 ENTITIES";
 
+pub fn gen_semicircle(edge: geom::LineSeg, bulge: f64) -> std::string::String {
+    let x0 = edge.p0.x;
+    let y0 = edge.p0.y;
+    let x1 = edge.p1.x;
+    let y1 = edge.p1.y;
+    return format!(
+        "   999
+--- SEMI-CIRCLE WITH EDGE ({:.3}, {:.3}) to ({:.3}, {:.3}) AND BULGE {:.3} ---
+0
+LWPOLYLINE
+  5
+4D
+100
+AcDbEntity
+  8
+0
+  6
+ByLayer
+ 62
+  256
+370
+   -1
+100
+AcDbPolyline
+ 90
+    2
+ 70
+    1
+ 43
+0
+ 10
+{:.3}
+ 20
+{:.3}
+ 42
+{:.3}
+ 10
+{:.3}
+ 20
+{:.3}", 
+        x0, y0, x1, y1, bulge,
+        x0,
+        y0,
+        bulge,
+        x1,
+        y1,
+    );
+}
+
 pub fn gen_circle(circle: geom::Circle) -> std::string::String {
     return format!(
         "   999
