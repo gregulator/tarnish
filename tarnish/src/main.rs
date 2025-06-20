@@ -46,16 +46,38 @@ fn main() -> std::io::Result<()> {
     );
     println!(
         "{}",
-        dxf::gen_semicircle(geom::LineSeg {
-          p0: geom::Vec2 {x: 0.0, y: -190.0},
-          p1: geom::Vec2 {x: 0.0, y: 190.0}
-        }, 1.0)
+        dxf::gen_polyline(geom::Polyline {
+            v: vec![
+                geom::PolylineVertex {
+                    point: geom::Vec2 { x: 0.0, y: 0.0 },
+                    bulge: None
+                },
+                geom::PolylineVertex {
+                    point: geom::Vec2 { x: 50.0, y: 0.0 },
+                    bulge: Some(0.5)
+                },
+                geom::PolylineVertex {
+                    point: geom::Vec2 { x: 25.0, y: 25.0 },
+                    bulge: None
+                },
+            ],
+        })
     );
+    //println!(
+    //    "{}",
+    //    dxf::gen_semicircle(geom::LineSeg {
+    //      p0: geom::Vec2 {x: 0.0, y: -190.0},
+    //      p1: geom::Vec2 {x: 0.0, y: 190.0}
+    //    }, 1.0)
+    //);
     println!(
         "{}",
         dxf::gen_bendline(geom::LineSeg {
-            p0: geom::Vec2 { x: 0.0, y: -200.0 },
-            p1: geom::Vec2 { x: 50.0, y: 200.0 },
+            p0: geom::Vec2 {
+                x: -20.0,
+                y: -200.0
+            },
+            p1: geom::Vec2 { x: -20.0, y: 200.0 },
         })
     );
     //println!("{}", dxf::gen_circle(geom::Circle{

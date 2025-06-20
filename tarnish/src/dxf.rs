@@ -1085,6 +1085,57 @@ SECTION
 2
 ENTITIES";
 
+pub fn gen_polyline(polyline: geom::Polyline) -> std::string::String {
+    let mut out = format!(
+        "   999
+--- POLYLINE ---
+0
+LWPOLYLINE
+  5
+4D
+100
+AcDbEntity
+  8
+0
+  6
+ByLayer
+ 62
+  256
+370
+   -1
+100
+AcDbPolyline
+ 90
+    {}
+ 70
+    1
+ 43
+0",
+        polyline.v.len()
+    );
+    for vertex in polyline.v {
+        out = out
+            + &format!(
+                "
+ 10
+{:.3}
+ 20
+{:.3}",
+                vertex.point.x, vertex.point.y
+            );
+        if vertex.bulge.is_some() {
+            out = out
+                + &format!(
+                    "
+ 42
+{:.3}",
+                    vertex.bulge.unwrap()
+                );
+        }
+    }
+    out
+}
+
 pub fn gen_semicircle(edge: geom::LineSeg, bulge: f64) -> std::string::String {
     let x0 = edge.p0.x;
     let y0 = edge.p0.y;
@@ -1124,13 +1175,8 @@ AcDbPolyline
  10
 {:.3}
  20
-{:.3}", 
-        x0, y0, x1, y1, bulge,
-        x0,
-        y0,
-        bulge,
-        x1,
-        y1,
+{:.3}",
+        x0, y0, x1, y1, bulge, x0, y0, bulge, x1, y1,
     );
 }
 
@@ -2760,44 +2806,4 @@ SECTION
 2
 BLOCKS
 0
-ENDSEC";
-
-pub const ENTITIES: &str = "999
---- ENTITIES SECTION ---
-0
-SECTION
-2
-ENTITIES
-0
-ENDSEC";
-
-pub const ENTITIES_WITH_CIRCLE: &str = "999
---- ENTITIES SECTION W/ CIRCLE---
-0
-SECTION
-2
-ENTITIES
-  0
-CIRCLE
-  5
-4E
-  100
-AcDbEntity
-  8
-0
-  6
-ByLayer
- 62
-256
-  370
--1
-  100
-AcDbCircle
- 10
-80.0
- 20
-90.0
- 40
-20.0
-  0
 ENDSEC";

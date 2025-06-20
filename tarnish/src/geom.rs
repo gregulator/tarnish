@@ -37,8 +37,14 @@ pub struct Circle {
 }
 
 #[derive(Serialize)]
+pub struct PolylineVertex {
+    pub point: Vec2,
+    pub bulge: Option<f64>,
+}
+
+#[derive(Serialize)]
 pub struct Polyline {
-    pub v: Vec<Vec2>,
+    pub v: Vec<PolylineVertex>,
 }
 
 #[derive(Serialize)]
