@@ -2,6 +2,248 @@
 
 use crate::geom;
 
+pub struct DxfWriter {
+    next_handle: u8,
+}
+
+impl DxfWriter {
+    pub fn new() -> DxfWriter {
+        DxfWriter { next_handle: 0x4D }
+    }
+
+    fn get_next_handle(&mut self) -> u8 {
+        self.next_handle = self.next_handle + 1;
+        return self.next_handle;
+    }
+
+    pub fn gen_polyline(&mut self, polyline: geom::Polyline) -> std::string::String {
+        let handle = self.get_next_handle();
+        let mut out = format!(
+            "   999
+--- POLYLINE ---
+0
+LWPOLYLINE
+  5
+{handle:X}
+100
+AcDbEntity
+  8
+0
+  6
+ByLayer
+ 62
+  256
+370
+   -1
+100
+AcDbPolyline
+ 90
+    {}
+ 70
+    1
+ 43
+0",
+            polyline.v.len()
+        );
+        for vertex in polyline.v {
+            out = out
+                + &format!(
+                    "
+ 10
+{:.3}
+ 20
+{:.3}",
+                    vertex.point.x, vertex.point.y
+                );
+            if vertex.bulge.is_some() {
+                out = out
+                    + &format!(
+                        "
+ 42
+{:.3}",
+                        vertex.bulge.unwrap()
+                    );
+            }
+        }
+        out
+    }
+
+    pub fn gen_semicircle(&mut self, edge: geom::LineSeg, bulge: f64) -> std::string::String {
+        let handle = self.get_next_handle();
+        let x0 = edge.p0.x;
+        let y0 = edge.p0.y;
+        let x1 = edge.p1.x;
+        let y1 = edge.p1.y;
+        return format!(
+            "   999
+--- SEMI-CIRCLE WITH EDGE ({:.3}, {:.3}) to ({:.3}, {:.3}) AND BULGE {:.3} ---
+0
+LWPOLYLINE
+  5
+{handle:X}
+100
+AcDbEntity
+  8
+0
+  6
+ByLayer
+ 62
+  256
+370
+   -1
+100
+AcDbPolyline
+ 90
+    2
+ 70
+    1
+ 43
+0
+ 10
+{:.3}
+ 20
+{:.3}
+ 42
+{:.3}
+ 10
+{:.3}
+ 20
+{:.3}",
+            x0, y0, x1, y1, bulge, x0, y0, bulge, x1, y1,
+        );
+    }
+
+    pub fn gen_circle(&mut self, circle: geom::Circle) -> std::string::String {
+        let handle = self.get_next_handle();
+        return format!(
+            "   999
+--- CIRLCE AT ({:.3}, {:.3}) with radius {} ---
+  0
+CIRCLE
+  5
+{handle:X}
+  100
+AcDbEntity
+  8
+0
+  6
+ByLayer
+ 62
+256
+  370
+-1
+  100
+AcDbCircle
+ 10
+{:.3}
+ 20
+{:.3}
+ 40
+{:.3}",
+            circle.center.x,
+            circle.center.y,
+            circle.radius,
+            circle.center.x,
+            circle.center.y,
+            circle.radius
+        );
+    }
+
+    pub fn gen_bendline(&mut self, line: geom::LineSeg) -> std::string::String {
+        let handle = self.get_next_handle();
+        let x0 = line.p0.x;
+        let x1 = line.p1.x;
+        let y0 = line.p0.y;
+        let y1 = line.p1.y;
+
+        return format!(
+            "   999
+--- DASHED LINE SEGMENT FROM ({}, {}) to ({}, {}) ---
+  0
+LINE
+  5
+{handle:X}
+100
+AcDbEntity
+  8
+0
+  6
+DASHED
+ 62
+  256
+370
+   -1
+100
+AcDbLine
+ 10
+{:.3}
+ 20
+{:.3}
+ 11
+{:.3}
+ 21
+{:.3}",
+            x0, y0, x1, y1, x0, y0, x1, y1
+        );
+    }
+
+    pub fn gen_rect(&mut self, rect: geom::Rect) -> std::string::String {
+        let handle = self.get_next_handle();
+        // See https://damassets.autodesk.net/content/dam/autodesk/www/developer-network/platform-technologies/autocad-dxf-archive/acad_dxf_2006.pdf
+        // 90: num vertices
+        // 70: polyline flag: 1=closed 128=plinegen
+        // 10, 20: X, Y coordinate repeated
+        let x0 = rect.ll.x;
+        let x1 = rect.ur.x;
+        let y0 = rect.ll.y;
+        let y1 = rect.ur.y;
+
+        return format!(
+            "   999
+--- RECTANGLE WITH BOUNDS ({}, {}) to ({}, {}) ---
+  0
+LWPOLYLINE
+  5
+{handle}
+  100
+AcDbEntity
+  8
+0
+  6
+ByLayer
+ 62
+256
+  370
+-1
+  100
+AcDbPolyline
+ 90
+   4
+ 70
+   1
+ 43
+0
+ 10
+{:.3}
+ 20
+{:.3}
+ 10
+{:.3}
+ 20
+{:.3}
+ 10
+{:.3}
+ 20
+{:.3}
+ 10
+{:.3}
+ 20
+{:.3}",
+            x0, y0, x1, y1, x0, y0, x1, y0, x1, y1, x0, y1
+        );
+    }
+}
+
 pub fn gen_header(extent: geom::Bounds2) -> std::string::String {
     return format!(
         "   999
@@ -1084,228 +1326,6 @@ pub const ENTITIES_HEADER: &str = "999
 SECTION
 2
 ENTITIES";
-
-pub fn gen_polyline(polyline: geom::Polyline) -> std::string::String {
-    let mut out = format!(
-        "   999
---- POLYLINE ---
-0
-LWPOLYLINE
-  5
-4D
-100
-AcDbEntity
-  8
-0
-  6
-ByLayer
- 62
-  256
-370
-   -1
-100
-AcDbPolyline
- 90
-    {}
- 70
-    1
- 43
-0",
-        polyline.v.len()
-    );
-    for vertex in polyline.v {
-        out = out
-            + &format!(
-                "
- 10
-{:.3}
- 20
-{:.3}",
-                vertex.point.x, vertex.point.y
-            );
-        if vertex.bulge.is_some() {
-            out = out
-                + &format!(
-                    "
- 42
-{:.3}",
-                    vertex.bulge.unwrap()
-                );
-        }
-    }
-    out
-}
-
-pub fn gen_semicircle(edge: geom::LineSeg, bulge: f64) -> std::string::String {
-    let x0 = edge.p0.x;
-    let y0 = edge.p0.y;
-    let x1 = edge.p1.x;
-    let y1 = edge.p1.y;
-    return format!(
-        "   999
---- SEMI-CIRCLE WITH EDGE ({:.3}, {:.3}) to ({:.3}, {:.3}) AND BULGE {:.3} ---
-0
-LWPOLYLINE
-  5
-4D
-100
-AcDbEntity
-  8
-0
-  6
-ByLayer
- 62
-  256
-370
-   -1
-100
-AcDbPolyline
- 90
-    2
- 70
-    1
- 43
-0
- 10
-{:.3}
- 20
-{:.3}
- 42
-{:.3}
- 10
-{:.3}
- 20
-{:.3}",
-        x0, y0, x1, y1, bulge, x0, y0, bulge, x1, y1,
-    );
-}
-
-pub fn gen_circle(circle: geom::Circle) -> std::string::String {
-    return format!(
-        "   999
---- CIRLCE AT ({:.3}, {:.3}) with radius {} ---
-  0
-CIRCLE
-  5
-4E
-  100
-AcDbEntity
-  8
-0
-  6
-ByLayer
- 62
-256
-  370
--1
-  100
-AcDbCircle
- 10
-{:.3}
- 20
-{:.3}
- 40
-{:.3}",
-        circle.center.x,
-        circle.center.y,
-        circle.radius,
-        circle.center.x,
-        circle.center.y,
-        circle.radius
-    );
-}
-
-pub fn gen_bendline(line: geom::LineSeg) -> std::string::String {
-    let x0 = line.p0.x;
-    let x1 = line.p1.x;
-    let y0 = line.p0.y;
-    let y1 = line.p1.y;
-
-    return format!(
-        "   999
---- DASHED LINE SEGMENT FROM ({}, {}) to ({}, {}) ---
-  0
-LINE
-  5
-4F
-100
-AcDbEntity
-  8
-0
-  6
-DASHED
- 62
-  256
-370
-   -1
-100
-AcDbLine
- 10
-{:.3}
- 20
-{:.3}
- 11
-{:.3}
- 21
-{:.3}",
-        x0, y0, x1, y1, x0, y0, x1, y1
-    );
-}
-
-pub fn gen_rect(rect: geom::Rect) -> std::string::String {
-    // See https://damassets.autodesk.net/content/dam/autodesk/www/developer-network/platform-technologies/autocad-dxf-archive/acad_dxf_2006.pdf
-    // 90: num vertices
-    // 70: polyline flag: 1=closed 128=plinegen
-    // 10, 20: X, Y coordinate repeated
-    let x0 = rect.ll.x;
-    let x1 = rect.ur.x;
-    let y0 = rect.ll.y;
-    let y1 = rect.ur.y;
-
-    return format!(
-        "   999
---- RECTANGLE WITH BOUNDS ({}, {}) to ({}, {}) ---
-  0
-LWPOLYLINE
-  5
-4D
-  100
-AcDbEntity
-  8
-0
-  6
-ByLayer
- 62
-256
-  370
--1
-  100
-AcDbPolyline
- 90
-   4
- 70
-   1
- 43
-0
- 10
-{:.3}
- 20
-{:.3}
- 10
-{:.3}
- 20
-{:.3}
- 10
-{:.3}
- 20
-{:.3}
- 10
-{:.3}
- 20
-{:.3}",
-        x0, y0, x1, y1, x0, y0, x1, y0, x1, y1, x0, y1
-    );
-}
 
 pub const ENTITIES_FOOTER: &str = "  0
 ENDSEC";
