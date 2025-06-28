@@ -29,3 +29,70 @@ pub fn gen_bolt_circle(dxf_writer: &mut dxf::DxfWriter, bc: BoltCircle) -> std::
     }
     out.to_string()
 }
+
+pub struct TerminalHoleWithNotch {
+    pub hole_circle: geom::Circle,
+    pub notch_length: f64,
+}
+
+pub fn gen_terminal_hole_with_notch(dxf_writer: &mut dxf::DxfWriter, thwn: &TerminalHoleWithNotch) -> std::string::String {
+  let start = geom::Vec2{x: thwn.hole_circle.center.x-thwn.notch_length, y: thwn.hole_circle.center.y-thwn.hole_circle.radius};
+  return dxf_writer.gen_polyline(geom::Polyline {
+      v: vec![
+          geom::PolylineVertex {
+              point: copy(&start),
+              bulge: None
+          },
+          geom::PolylineVertex {
+              point: add(&start, &geom::Vec2{x:0.0, y:thwn.notch_length}),
+              bulge: None
+          },
+          geom::PolylineVertex {
+              point: add(&start, &geom::Vec2{x:thwn.notch_length, y:thwn.notch_length}),
+              bulge: None
+          },
+          geom::PolylineVertex {
+              point: add(&start, &geom::Vec2{x:thwn.notch_length, y:0.0}),
+              bulge: Some(-2.0*thwn.hole_circle.radius/thwn.notch_length)
+          },
+      ]
+  });
+}
+
+pub fn perp(v: &geom::Vec2) -> geom::Vec2 {
+  return normalize(&geom::Vec2{x: v.y, y: -v.x});
+}
+
+pub fn perp2(v0: &geom::Vec2, v1: &geom::Vec2) -> geom::Vec2 {
+  return perp(&geom::Vec2{x: v1.x-v0.x, y: v1.y-v0.y});
+}
+
+pub fn add(v0: &geom::Vec2, v1: &geom::Vec2) -> geom::Vec2 {
+  return geom::Vec2{x: v0.x + v1.x, y: v0.y + v1.y};
+}
+
+pub fn sub(v0: &geom::Vec2, v1: &geom::Vec2) -> geom::Vec2 {
+  return geom::Vec2{x: v0.x - v1.x, y: v0.y - v1.y};
+}
+
+pub fn scale(s: f64, v: &geom::Vec2) -> geom::Vec2 {
+  return geom::Vec2{x: s*v.x, y: s*v.y};
+}
+
+pub fn copy(v: &geom::Vec2) -> geom::Vec2 {
+  return geom::Vec2{x: v.x, y: v.y};
+}
+
+pub fn mirror_x(v: &geom::Vec2) -> geom::Vec2 {
+  return geom::Vec2{x: -v.x, y: v.y};
+}
+
+pub fn norm(v: &geom::Vec2) -> f64 {
+  return f64::sqrt(v.x*v.x + v.y*v.y);
+}
+
+pub fn normalize(v: &geom::Vec2) -> geom::Vec2 {
+  let n = norm(v);
+  return geom::Vec2{x: v.x/n, y: v.y/n};
+}
+
