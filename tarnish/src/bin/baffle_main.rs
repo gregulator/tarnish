@@ -1,4 +1,5 @@
-// Run with: cargo run
+// Run with:
+// cargo run --bin=baffle_main | tee baffle.dxf
 
 // TODO:
 // - Set units to MM (Done but SCS still checks)
@@ -15,6 +16,24 @@ use tarnish::utils;
 // use std::io::prelude::*;
 
 fn main() -> std::io::Result<()> {
+    let bottom_gap = 74.0; // !
+    let sub_outer_diameter = 384.0; // !
+    let sub_bolt_diameter = 372.0; // !
+    let sub_cutout_diameter = 350.0; // !
+    let sub_sub_gap = 12.0; // !
+    let sub_fr_gap = 12.0; // !
+    let fr_bolt_diameter = 84.1; // !
+    let fr_cutout_diameter = 64.0; // !
+    let fr_outer_length = 70.0; // !
+    let fr_fr_gap = 6.0; // !
+    let top_gap = 74.0; // !
+
+    let mut y: f64 = bottom_gap;
+
+    let baffle_width = 762.0;
+    let baffle_center_width = 434.0;
+    let baffle_height = bottom_gap + sub_outer_diameter*2.0 + sub_sub_gap + sub_fr_gap + fr_outer_length*2.0 + fr_fr_gap + top_gap;
+
     let mut dxf_writer = dxf::DxfWriter::new();
     //let p = Part {
     //    outline: Shape::Rect(Rect {
@@ -31,8 +50,8 @@ fn main() -> std::io::Result<()> {
     let extent = geom::Bounds2 {
         min: geom::Vec2 { x: 0.0, y: 0.0 },
         max: geom::Vec2 {
-            x: 762.0,
-            y: 1092.0,
+            x: baffle_width,
+            y: baffle_height,
         },
     };
     println!("{}", dxf::gen_header(extent));
@@ -54,15 +73,22 @@ fn main() -> std::io::Result<()> {
                 },
                 geom::PolylineVertex {
                     point: geom::Vec2 {
+                        x: 150.0-5.0,
+                        y: baffle_height-5.0,
+                    },
+                    bulge: Some(-0.2),
+                },
+                geom::PolylineVertex {
+                    point: geom::Vec2 {
                         x: 150.0,
-                        y: 1030.0
+                        y: baffle_height,
                     },
                     bulge: None
                 },
                 geom::PolylineVertex {
                     point: geom::Vec2 {
                         x: 612.0,
-                        y: 1030.0
+                        y: baffle_height,
                     },
                     bulge: Some(0.05)
                 },
@@ -116,14 +142,17 @@ fn main() -> std::io::Result<()> {
             ],
         })
     );
+
+    // LOWER SUB
+    y += sub_outer_diameter/2.0;
     println!(
         "{}",
         dxf_writer.gen_circle(geom::Circle {
             center: geom::Vec2 {
-                x: 381.0,
-                y: 175.0 + 75.0
+                x: baffle_width/2.0,
+                y: y,
             },
-            radius: 175.0
+            radius: sub_cutout_diameter/2.0,
         })
     );
     println!(
@@ -133,64 +162,135 @@ fn main() -> std::io::Result<()> {
             utils::BoltCircle {
                 ring_circle: geom::Circle {
                     center: geom::Vec2 {
-                        x: 381.0,
-                        y: 175.0 + 75.0
+                        x: baffle_width/2.0,
+                        y: y
                     },
-                    radius: 185.0,
+                    radius: sub_bolt_diameter/2.0,
                 },
                 num_holes: 8,
-                hole_radius: 6.0,
+                hole_radius: 3.0,
+                angle_offset: 22.5,
+            }
+        )
+    );
+
+    // UPPER SUB
+    y += sub_outer_diameter + sub_sub_gap;
+
+    println!(
+        "{}",
+        dxf_writer.gen_circle(geom::Circle {
+            center: geom::Vec2 {
+                x: baffle_width/2.0,
+                y: y,
+            },
+            radius: sub_cutout_diameter/2.0,
+        })
+    );
+    println!(
+        "{}",
+        utils::gen_bolt_circle(
+            &mut dxf_writer,
+            utils::BoltCircle {
+                ring_circle: geom::Circle {
+                    center: geom::Vec2 {
+                        x: baffle_width/2.0,
+                        y: y
+                    },
+                    radius: sub_bolt_diameter/2.0,
+                },
+                num_holes: 8,
+                hole_radius: 3.0,
                 angle_offset: 0.0,
             }
         )
     );
+
+    // LOWER FULLRANGE
+    y += sub_outer_diameter/2.0 + sub_fr_gap + fr_outer_length/2.0;
     println!(
         "{}",
         dxf_writer.gen_circle(geom::Circle {
             center: geom::Vec2 {
-                x: 381.0,
-                y: 350.0 + 12.0 + 185.0 + 75.0
+                x: baffle_width/2.0,
+                y: y
             },
-            radius: 175.0
+            radius: fr_cutout_diameter/2.0,
         })
     );
+
+    println!(
+        "{}",
+        utils::gen_bolt_circle(
+            &mut dxf_writer,
+            utils::BoltCircle {
+                ring_circle: geom::Circle {
+                    center: geom::Vec2 {
+                        x: baffle_width/2.0,
+                        y: y
+                    },
+                    radius: fr_bolt_diameter/2.0,
+                },
+                num_holes: 4,
+                hole_radius: 3.0,
+                angle_offset: 45.0,
+            }
+        )
+    );
+
+
+    // UPPER FULLRANGE
+    y += fr_fr_gap + fr_outer_length;
     println!(
         "{}",
         dxf_writer.gen_circle(geom::Circle {
             center: geom::Vec2 {
-                x: 381.0,
-                y: 70.0 + 12.0 + 185.0 + 350.0 + 12.0 + 185.0 + 75.0
+                x: baffle_width/2.0,
+                y: y
             },
-            radius: 35.0
+            radius: fr_cutout_diameter/2.0,
         })
     );
+
     println!(
         "{}",
-        dxf_writer.gen_circle(geom::Circle {
-            center: geom::Vec2 {
-                x: 381.0,
-                y: 70.0 + 12.0 + 70.0 + 12.0 + 185.0 + 350.0 + 12.0 + 185.0 + 75.0
-            },
-            radius: 35.0
-        })
+        utils::gen_bolt_circle(
+            &mut dxf_writer,
+            utils::BoltCircle {
+                ring_circle: geom::Circle {
+                    center: geom::Vec2 {
+                        x: baffle_width/2.0,
+                        y: y
+                    },
+                    radius: fr_bolt_diameter/2.0,
+                },
+                num_holes: 4,
+                hole_radius: 3.0,
+                angle_offset: 45.0,
+            }
+        )
     );
+
+    // BENDLINES
+    let bend_0_x = baffle_width/2.0 - baffle_center_width/2.0;
     println!(
         "{}",
         dxf_writer.gen_bendline(geom::LineSeg {
-            p0: geom::Vec2 { x: 171.0, y: 0.0 },
+            p0: geom::Vec2 { x: bend_0_x, y: 0.0 },
             p1: geom::Vec2 {
-                x: 171.0,
-                y: 1092.0
+                x: bend_0_x,
+                y: baffle_height,
             },
         })
     );
+    let bend_1_x = baffle_width/2.0 + baffle_center_width/2.0;
     println!(
         "{}",
         dxf_writer.gen_bendline(geom::LineSeg {
-            p0: geom::Vec2 { x: 591.0, y: 0.0 },
+            p0: geom::Vec2 { x: bend_1_x, y: 0.0 },
             p1: geom::Vec2 {
-                x: 591.0,
-                y: 1092.0
+                x: bend_1_x,
+                y: baffle_height,
             },
         })
     );

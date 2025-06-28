@@ -13,7 +13,7 @@ pub struct BoltCircle {
 pub fn gen_bolt_circle(dxf_writer: &mut dxf::DxfWriter, bc: BoltCircle) -> std::string::String {
     let mut out = std::string::String::new();
     for i in 0..bc.num_holes {
-        let angle = bc.angle_offset + ((i as f64) * 2.0 * PI) / (bc.num_holes as f64);
+        let angle = (bc.angle_offset*PI/180.0) + (((i as f64) * 2.0 * PI) / (bc.num_holes as f64));
         let hole_center = geom::Vec2 {
             x: bc.ring_circle.center.x + bc.ring_circle.radius * f64::cos(angle),
             y: bc.ring_circle.center.y + bc.ring_circle.radius * f64::sin(angle),
