@@ -18,7 +18,7 @@ use tarnish::air;
 
 fn main() -> std::io::Result<()> {
     // PARAMETERS
-    let show_trim_outlines = true;
+    let show_trim_outlines = false;
 
     // Width of leg sections.
     let baffle_leg_length = 25.0;
@@ -333,7 +333,7 @@ fn main() -> std::io::Result<()> {
                     radius: air::FR_BOLT_CIRCLE_DIAMETER/2.0,
                 },
                 num_holes: 4,
-                hole_radius: 3.0, // !
+                hole_radius: BAFFLE_FR_BOLT_HOLE_DIAMETER/2.0,
                 angle_offset: 45.0,
             }
         )
@@ -365,7 +365,7 @@ fn main() -> std::io::Result<()> {
                     radius: air::FR_BOLT_CIRCLE_DIAMETER/2.0,
                 },
                 num_holes: 4,
-                hole_radius: 3.0, // !
+                hole_radius: BAFFLE_FR_BOLT_HOLE_DIAMETER/2.0,
                 angle_offset: 45.0,
             }
         )
@@ -382,7 +382,7 @@ fn main() -> std::io::Result<()> {
         x: air::BAFFLE_LL_STAND_HOLE_CENTER_X + air::BAFFLE_STAND_HOLE_LENGTH/2.0,
         y: air::BAFFLE_LOWER_STAND_HOLE_CENTER_Y
       },
-      thickness: air::BAFFLE_STAND_HOLE_THICKNESS, // !
+      thickness: air::BAFFLE_STAND_HOLE_THICKNESS,
     }));
     // Upper-left
     println!("{}", utils::gen_pill(&mut dxf_writer, &utils::Pill{
@@ -394,7 +394,7 @@ fn main() -> std::io::Result<()> {
         x: air::BAFFLE_UL_STAND_HOLE_CENTER_X + air::BAFFLE_STAND_HOLE_LENGTH/2.0,
         y: air::BAFFLE_UPPER_STAND_HOLE_CENTER_Y
       },
-      thickness: air::BAFFLE_STAND_HOLE_THICKNESS, // !
+      thickness: air::BAFFLE_STAND_HOLE_THICKNESS,
     }));
     // Lower-right
     println!("{}", utils::gen_pill(&mut dxf_writer, &utils::Pill{
@@ -406,7 +406,7 @@ fn main() -> std::io::Result<()> {
         x: air::BAFFLE_LR_STAND_HOLE_CENTER_X + air::BAFFLE_STAND_HOLE_LENGTH/2.0,
         y: air::BAFFLE_LOWER_STAND_HOLE_CENTER_Y
       },
-      thickness: air::BAFFLE_STAND_HOLE_THICKNESS, // !
+      thickness: air::BAFFLE_STAND_HOLE_THICKNESS,
     }));
     // Upper-right
     println!("{}", utils::gen_pill(&mut dxf_writer, &utils::Pill{
@@ -418,7 +418,7 @@ fn main() -> std::io::Result<()> {
         x: air::BAFFLE_UR_STAND_HOLE_CENTER_X + air::BAFFLE_STAND_HOLE_LENGTH/2.0,
         y: air::BAFFLE_UPPER_STAND_HOLE_CENTER_Y
       },
-      thickness: air::BAFFLE_STAND_HOLE_THICKNESS, // !
+      thickness: air::BAFFLE_STAND_HOLE_THICKNESS,
     }));
 
 

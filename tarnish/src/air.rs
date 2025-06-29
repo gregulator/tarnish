@@ -59,14 +59,15 @@ pub const WOOFGASKET_THICKNESS : f64 = 16.0;
 // Woofer trim bolt hole diameter.
 // For the metal trim it doesn't really matter since hardware gets inserted.
 // But this is also used for the gasket, so should be oversized.
-pub const WOOFTRIM_BOLT_HOLE_DIAMETER : f64 = 7.0;
+pub const WOOFTRIM_BOLT_HOLE_DIAMETER : f64 = 6.0;
+
+pub const BAFFLE_FR_BOLT_HOLE_DIAMETER: f64 = 5.0;
 
 pub const BAFFLE_LOWER_STAND_HOLE_CENTER_Y: f64 = 50.0;
 pub const BAFFLE_UPPER_STAND_HOLE_CENTER_Y: f64 = 150.0;
-pub const BAFFLE_STAND_HOLE_DIAMETER: f64 = 7.0; // !
-pub const BAFFLE_STAND_HOLE_OFFSET_X: f64 = -4.0; // !
+pub const BAFFLE_STAND_HOLE_OFFSET_X: f64 = -4.0;
 pub const BAFFLE_STAND_HOLE_LENGTH: f64 = 12.5;
-pub const BAFFLE_STAND_HOLE_THICKNESS: f64 = 7.0; // !
+pub const BAFFLE_STAND_HOLE_THICKNESS: f64 = 8.0;
 
 // COMPUTED PARAMETERS
 pub const WOOFER_BOLT_CIRCLE_RADIUS : f64 = WOOFER_BOLT_CIRCLE_DIAMETER/2.0;
