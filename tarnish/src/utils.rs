@@ -3,6 +3,10 @@ use crate::geom;
 
 const PI: f64 = std::f64::consts::PI;
 
+pub fn origin() -> geom::Vec2 {
+  return geom::Vec2{x: 0.0, y: 0.0};
+}
+
 pub struct BoltCircle {
     pub ring_circle: geom::Circle,
     pub num_holes: i32,
@@ -29,6 +33,42 @@ pub fn gen_bolt_circle(dxf_writer: &mut dxf::DxfWriter, bc: BoltCircle) -> std::
     }
     out.to_string()
 }
+
+pub struct Pill {
+    pub start: geom::Vec2,
+    pub end: geom::Vec2,
+    pub thickness: f64
+}
+
+pub fn gen_pill(dxf_writer: &mut dxf::DxfWriter, pill: &Pill) -> std::string::String {
+  let prp = perp2(&pill.end, &pill.start);
+  let ll = add(&pill.start, &scale(-pill.thickness/2.0, &prp));
+  let ul = add(&pill.start, &scale(pill.thickness/2.0, &prp));
+  let ur = add(&pill.end, &scale(pill.thickness/2.0, &prp));
+  let lr = add(&pill.end, &scale(-pill.thickness/2.0, &prp));
+
+  return dxf_writer.gen_polyline(geom::Polyline {
+      v: vec![
+          geom::PolylineVertex {
+              point: ll,
+              bulge: Some(-1.0)
+          },
+          geom::PolylineVertex {
+              point: ul,
+              bulge: None
+          },
+          geom::PolylineVertex {
+              point: ur,
+              bulge: Some(-1.0)
+          },
+          geom::PolylineVertex {
+              point: lr,
+              bulge: None
+          },
+      ]
+  });
+}
+
 
 pub struct TerminalHoleWithNotch {
     pub hole_circle: geom::Circle,
