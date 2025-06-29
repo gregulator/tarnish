@@ -333,7 +333,7 @@ fn main() -> std::io::Result<()> {
                     radius: air::FR_BOLT_CIRCLE_DIAMETER/2.0,
                 },
                 num_holes: 4,
-                hole_radius: BAFFLE_FR_BOLT_HOLE_DIAMETER/2.0,
+                hole_radius: air::BAFFLE_FR_BOLT_HOLE_DIAMETER/2.0,
                 angle_offset: 45.0,
             }
         )
@@ -365,7 +365,7 @@ fn main() -> std::io::Result<()> {
                     radius: air::FR_BOLT_CIRCLE_DIAMETER/2.0,
                 },
                 num_holes: 4,
-                hole_radius: BAFFLE_FR_BOLT_HOLE_DIAMETER/2.0,
+                hole_radius: air::BAFFLE_FR_BOLT_HOLE_DIAMETER/2.0,
                 angle_offset: 45.0,
             }
         )
