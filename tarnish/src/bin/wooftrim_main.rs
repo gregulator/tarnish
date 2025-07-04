@@ -53,7 +53,7 @@ fn main() -> std::io::Result<()> {
                 },
                 num_holes: 8,
                 hole_radius: air::WOOFTRIM_BOLT_HOLE_RADIUS,
-                angle_offset: 0.0,
+                angle_offset: 22.5,
             }
         )
     );

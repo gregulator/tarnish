@@ -34,6 +34,57 @@ pub fn gen_bolt_circle(dxf_writer: &mut dxf::DxfWriter, bc: BoltCircle) -> std::
     out.to_string()
 }
 
+pub struct RoundedRect {
+    pub ll: geom::Vec2,
+    pub ur: geom::Vec2,
+    pub round_radius: f64
+}
+
+pub fn gen_rounded_rect(dxf_writer: &mut dxf::DxfWriter, rounded_rect: &RoundedRect) -> std::string::String {
+  let ll = &rounded_rect.ll;
+  let ur = &rounded_rect.ur;
+  let ul = geom::Vec2{x:ll.x, y: ur.y};
+  let lr = geom::Vec2{x:ur.x, y: ll.y};
+  let round_radius = &rounded_rect.round_radius;
+  let bulge = -0.42;
+  return dxf_writer.gen_polyline(geom::Polyline {
+      v: vec![
+          geom::PolylineVertex {
+              point: geom::Vec2{x: ll.x, y: ll.y+round_radius},
+              bulge: None
+          },
+          geom::PolylineVertex {
+              point: geom::Vec2{x: ul.x, y: ul.y-round_radius},
+              bulge: Some(bulge)
+          },
+          geom::PolylineVertex {
+              point: geom::Vec2{x: ul.x+round_radius, y: ul.y},
+              bulge: None
+          },
+          geom::PolylineVertex {
+              point: geom::Vec2{x: ur.x-round_radius, y: ur.y},
+              bulge: Some(bulge)
+          },
+          geom::PolylineVertex {
+              point: geom::Vec2{x: ur.x, y: ur.y-round_radius},
+              bulge: None
+          },
+          geom::PolylineVertex {
+              point: geom::Vec2{x: lr.x, y: lr.y+round_radius},
+              bulge: Some(bulge)
+          },
+          geom::PolylineVertex {
+              point: geom::Vec2{x: lr.x-round_radius, y: lr.y},
+              bulge: None
+          },
+          geom::PolylineVertex {
+              point: geom::Vec2{x: ll.x+round_radius, y: lr.y},
+              bulge: Some(bulge)
+          },
+      ]
+  });
+}
+
 pub struct Pill {
     pub start: geom::Vec2,
     pub end: geom::Vec2,

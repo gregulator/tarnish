@@ -104,7 +104,7 @@ fn main() -> std::io::Result<()> {
                         x: baffle_wing_width - air::BAFFLE_TOP_OVERHANG + baffle_corner_rounding,
                         y: air::BAFFLE_HEIGHT,
                     },
-                    bulge: None
+                    bulge: Some(-0.1)
                 },
 
                 // <- top ->
