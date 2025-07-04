@@ -1,10 +1,10 @@
 // Run with:
 // cargo run --bin=woofgasket_main | tee wooftrim.dxf
 
+use tarnish::air;
 use tarnish::dxf;
 use tarnish::geom;
 use tarnish::utils;
-use tarnish::air;
 
 // use std::fs::File;
 // use std::io::prelude::*;
@@ -12,7 +12,10 @@ use tarnish::air;
 fn main() -> std::io::Result<()> {
     let mut dxf_writer = dxf::DxfWriter::new();
     let extent = geom::Bounds2 {
-        min: geom::Vec2 { x: -air::WOOFGASKET_OUTER_RADIUS, y: -air::WOOFGASKET_OUTER_RADIUS },
+        min: geom::Vec2 {
+            x: -air::WOOFGASKET_OUTER_RADIUS,
+            y: -air::WOOFGASKET_OUTER_RADIUS,
+        },
         max: geom::Vec2 {
             x: air::WOOFGASKET_OUTER_RADIUS,
             y: air::WOOFGASKET_OUTER_RADIUS,

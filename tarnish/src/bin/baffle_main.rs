@@ -8,10 +8,10 @@
 // - Gen handles (not really necessary)
 // - Polygons
 // - Splines
+use tarnish::air;
 use tarnish::dxf;
 use tarnish::geom;
 use tarnish::utils;
-use tarnish::air;
 
 // use std::fs::File;
 // use std::io::prelude::*;
@@ -29,11 +29,10 @@ fn main() -> std::io::Result<()> {
     // Amount to round corners.
     let baffle_corner_rounding_buldge = -0.4;
 
-    // Gap between the floor and the bottom of the 
-
+    // Gap between the floor and the bottom of the
 
     // DERIVED PARAMETERS
-    let baffle_wing_width = (air::BAFFLE_WIDTH - air::BAFFLE_CENTER_WIDTH)/2.0;
+    let baffle_wing_width = (air::BAFFLE_WIDTH - air::BAFFLE_CENTER_WIDTH) / 2.0;
 
     let mut dxf_writer = dxf::DxfWriter::new();
     //let p = Part {
@@ -68,37 +67,38 @@ fn main() -> std::io::Result<()> {
         dxf_writer.gen_polyline(geom::Polyline {
             v: vec![
                 // * bottom-left
-
                 geom::PolylineVertex {
-                    point: geom::Vec2 { x: baffle_corner_rounding, y: 0.0 },
+                    point: geom::Vec2 {
+                        x: baffle_corner_rounding,
+                        y: 0.0
+                    },
                     bulge: Some(baffle_corner_rounding_buldge)
                 },
-
                 // <- Rounded bottom-left corner
                 geom::PolylineVertex {
-                    point: geom::Vec2 { x: 0.0, y: baffle_corner_rounding },
+                    point: geom::Vec2 {
+                        x: 0.0,
+                        y: baffle_corner_rounding
+                    },
                     bulge: None
                 },
-
                 // <- left-side from floor to taper start ->
-
                 geom::PolylineVertex {
-                    point: geom::Vec2 { x: 0.0, y: air::BAFFLE_TAPER_START_Y },
+                    point: geom::Vec2 {
+                        x: 0.0,
+                        y: air::BAFFLE_TAPER_START_Y
+                    },
                     bulge: Some(0.05)
                 },
-
-                // <- left-side taper to top of baffle -> 
-
+                // <- left-side taper to top of baffle ->
                 geom::PolylineVertex {
                     point: geom::Vec2 {
                         x: baffle_wing_width - air::BAFFLE_TOP_OVERHANG,
                         y: air::BAFFLE_HEIGHT - baffle_corner_rounding,
                     },
-                    bulge: Some(0.0*baffle_corner_rounding_buldge)
+                    bulge: Some(0.0 * baffle_corner_rounding_buldge)
                 },
-
                 // <- top-left rounded corner ->
-
                 geom::PolylineVertex {
                     point: geom::Vec2 {
                         x: baffle_wing_width - air::BAFFLE_TOP_OVERHANG + baffle_corner_rounding,
@@ -106,19 +106,16 @@ fn main() -> std::io::Result<()> {
                     },
                     bulge: Some(-0.1)
                 },
-
                 // <- top ->
-
                 geom::PolylineVertex {
                     point: geom::Vec2 {
-                        x: air::BAFFLE_WIDTH - baffle_wing_width + air::BAFFLE_TOP_OVERHANG - baffle_corner_rounding,
+                        x: air::BAFFLE_WIDTH - baffle_wing_width + air::BAFFLE_TOP_OVERHANG
+                            - baffle_corner_rounding,
                         y: air::BAFFLE_HEIGHT,
                     },
-                    bulge: Some(0.0*baffle_corner_rounding_buldge)
+                    bulge: Some(0.0 * baffle_corner_rounding_buldge)
                 },
-
                 // <- top-right rounded corner ->
-
                 geom::PolylineVertex {
                     point: geom::Vec2 {
                         x: air::BAFFLE_WIDTH - baffle_wing_width + air::BAFFLE_TOP_OVERHANG,
@@ -126,29 +123,31 @@ fn main() -> std::io::Result<()> {
                     },
                     bulge: Some(0.05)
                 },
-
                 // <- right-side taper from top of baffle ->
-
                 geom::PolylineVertex {
-                    point: geom::Vec2 { x: air::BAFFLE_WIDTH, y: air::BAFFLE_TAPER_START_Y},
+                    point: geom::Vec2 {
+                        x: air::BAFFLE_WIDTH,
+                        y: air::BAFFLE_TAPER_START_Y
+                    },
                     bulge: None
                 },
-
                 // <- right side from taper start to floor ->
-
                 geom::PolylineVertex {
-                    point: geom::Vec2 { x: air::BAFFLE_WIDTH, y: baffle_corner_rounding },
+                    point: geom::Vec2 {
+                        x: air::BAFFLE_WIDTH,
+                        y: baffle_corner_rounding
+                    },
                     bulge: Some(baffle_corner_rounding_buldge)
                 },
-
                 // <- rounded bottom-right corner
                 geom::PolylineVertex {
-                    point: geom::Vec2 { x: air::BAFFLE_WIDTH-baffle_corner_rounding, y:0.0 },
+                    point: geom::Vec2 {
+                        x: air::BAFFLE_WIDTH - baffle_corner_rounding,
+                        y: 0.0
+                    },
                     bulge: None
                 },
-
                 // <- right-rear leg -->
-
                 geom::PolylineVertex {
                     point: geom::Vec2 {
                         x: air::BAFFLE_WIDTH - baffle_leg_length,
@@ -156,9 +155,7 @@ fn main() -> std::io::Result<()> {
                     },
                     bulge: Some(0.5)
                 },
-
                 // <- right side bottom gap -->
-
                 geom::PolylineVertex {
                     point: geom::Vec2 {
                         x: air::BAFFLE_WIDTH - baffle_wing_width + baffle_leg_length,
@@ -166,9 +163,7 @@ fn main() -> std::io::Result<()> {
                     },
                     bulge: None
                 },
-
                 // <- front-right leg -->
-
                 geom::PolylineVertex {
                     point: geom::Vec2 {
                         x: air::BAFFLE_WIDTH - baffle_wing_width - baffle_leg_length,
@@ -176,9 +171,7 @@ fn main() -> std::io::Result<()> {
                     },
                     bulge: Some(0.25)
                 },
-
                 // <- front bottom gap -->
-
                 geom::PolylineVertex {
                     point: geom::Vec2 {
                         x: baffle_wing_width + baffle_leg_length,
@@ -186,9 +179,7 @@ fn main() -> std::io::Result<()> {
                     },
                     bulge: None
                 },
-
                 // <- front-bottom gap -->
-
                 geom::PolylineVertex {
                     point: geom::Vec2 {
                         x: baffle_wing_width - baffle_leg_length,
@@ -196,11 +187,12 @@ fn main() -> std::io::Result<()> {
                     },
                     bulge: Some(0.5)
                 },
-
                 // <- left-rear leg ->
-
                 geom::PolylineVertex {
-                    point: geom::Vec2 { x: baffle_leg_length, y: 0.0 },
+                    point: geom::Vec2 {
+                        x: baffle_leg_length,
+                        y: 0.0
+                    },
                     bulge: None
                 },
             ],
@@ -210,16 +202,16 @@ fn main() -> std::io::Result<()> {
     // LOWER WOOFER
     // (DEBUG) Trim.
     if show_trim_outlines {
-      println!(
-          "{}",
-          dxf_writer.gen_circle(geom::Circle {
-              center: geom::Vec2 {
-                  x: air::BAFFLE_CENTER_X,
-                  y: air::BAFFLE_LOWER_WOOF_CENTER_Y,
-              },
-              radius: air::WOOFTRIM_OUTER_RADIUS,
-          })
-      );
+        println!(
+            "{}",
+            dxf_writer.gen_circle(geom::Circle {
+                center: geom::Vec2 {
+                    x: air::BAFFLE_CENTER_X,
+                    y: air::BAFFLE_LOWER_WOOF_CENTER_Y,
+                },
+                radius: air::WOOFTRIM_OUTER_RADIUS,
+            })
+        );
     }
     // Cutout
     println!(
@@ -255,16 +247,16 @@ fn main() -> std::io::Result<()> {
     // UPPER WOOFER
     // (DEBUG) Trim.
     if show_trim_outlines {
-      println!(
-          "{}",
-          dxf_writer.gen_circle(geom::Circle {
-              center: geom::Vec2 {
-                  x: air::BAFFLE_CENTER_X,
-                  y: air::BAFFLE_UPPER_WOOF_CENTER_Y,
-              },
-              radius: air::WOOFTRIM_OUTER_RADIUS,
-          })
-      );
+        println!(
+            "{}",
+            dxf_writer.gen_circle(geom::Circle {
+                center: geom::Vec2 {
+                    x: air::BAFFLE_CENTER_X,
+                    y: air::BAFFLE_UPPER_WOOF_CENTER_Y,
+                },
+                radius: air::WOOFTRIM_OUTER_RADIUS,
+            })
+        );
     }
     // Cutout
     println!(
@@ -300,11 +292,17 @@ fn main() -> std::io::Result<()> {
     // FULLRANGE TRIM
     if show_trim_outlines {
         println!(
-          "{}",
-          dxf_writer.gen_rect(geom::Rect {
-            ll: geom::Vec2{x: air::FRTRIM_LL_X, y: air::FRTRIM_LL_Y},
-            ur: geom::Vec2{x: air::FRTRIM_UR_X, y: air::FRTRIM_UR_Y}
-          })
+            "{}",
+            dxf_writer.gen_rect(geom::Rect {
+                ll: geom::Vec2 {
+                    x: air::FRTRIM_LL_X,
+                    y: air::FRTRIM_LL_Y
+                },
+                ur: geom::Vec2 {
+                    x: air::FRTRIM_UR_X,
+                    y: air::FRTRIM_UR_Y
+                }
+            })
         );
     }
 
@@ -316,7 +314,7 @@ fn main() -> std::io::Result<()> {
                 x: air::BAFFLE_CENTER_X,
                 y: air::BAFFLE_LOWER_FR_CENTER_Y
             },
-            radius: air::FR_CUTOUT_DIAMETER/2.0,
+            radius: air::FR_CUTOUT_DIAMETER / 2.0,
         })
     );
 
@@ -330,15 +328,14 @@ fn main() -> std::io::Result<()> {
                         x: air::BAFFLE_CENTER_X,
                         y: air::BAFFLE_LOWER_FR_CENTER_Y
                     },
-                    radius: air::FR_BOLT_CIRCLE_DIAMETER/2.0,
+                    radius: air::FR_BOLT_CIRCLE_DIAMETER / 2.0,
                 },
                 num_holes: 4,
-                hole_radius: air::BAFFLE_FR_BOLT_HOLE_DIAMETER/2.0,
+                hole_radius: air::BAFFLE_FR_BOLT_HOLE_DIAMETER / 2.0,
                 angle_offset: 45.0,
             }
         )
     );
-
 
     // UPPER FULLRANGE
     println!(
@@ -348,7 +345,7 @@ fn main() -> std::io::Result<()> {
                 x: air::BAFFLE_CENTER_X,
                 y: air::BAFFLE_UPPER_FR_CENTER_Y
             },
-            radius: air::FR_CUTOUT_DIAMETER/2.0,
+            radius: air::FR_CUTOUT_DIAMETER / 2.0,
         })
     );
 
@@ -362,10 +359,10 @@ fn main() -> std::io::Result<()> {
                         x: air::BAFFLE_CENTER_X,
                         y: air::BAFFLE_UPPER_FR_CENTER_Y
                     },
-                    radius: air::FR_BOLT_CIRCLE_DIAMETER/2.0,
+                    radius: air::FR_BOLT_CIRCLE_DIAMETER / 2.0,
                 },
                 num_holes: 4,
-                hole_radius: air::BAFFLE_FR_BOLT_HOLE_DIAMETER/2.0,
+                hole_radius: air::BAFFLE_FR_BOLT_HOLE_DIAMETER / 2.0,
                 angle_offset: 45.0,
             }
         )
@@ -373,71 +370,100 @@ fn main() -> std::io::Result<()> {
 
     // STAND MOUNTING HOLES
     // Lower-left
-    println!("{}", utils::gen_pill(&mut dxf_writer, &utils::Pill{
-      start: geom::Vec2{
-        x: air::BAFFLE_LL_STAND_HOLE_CENTER_X - air::BAFFLE_STAND_HOLE_LENGTH/2.0,
-        y: air::BAFFLE_LOWER_STAND_HOLE_CENTER_Y
-      },
-      end: geom::Vec2{
-        x: air::BAFFLE_LL_STAND_HOLE_CENTER_X + air::BAFFLE_STAND_HOLE_LENGTH/2.0,
-        y: air::BAFFLE_LOWER_STAND_HOLE_CENTER_Y
-      },
-      thickness: air::BAFFLE_STAND_HOLE_THICKNESS,
-    }));
+    println!(
+        "{}",
+        utils::gen_pill(
+            &mut dxf_writer,
+            &utils::Pill {
+                start: geom::Vec2 {
+                    x: air::BAFFLE_LL_STAND_HOLE_CENTER_X - air::BAFFLE_STAND_HOLE_LENGTH / 2.0,
+                    y: air::BAFFLE_LOWER_STAND_HOLE_CENTER_Y
+                },
+                end: geom::Vec2 {
+                    x: air::BAFFLE_LL_STAND_HOLE_CENTER_X + air::BAFFLE_STAND_HOLE_LENGTH / 2.0,
+                    y: air::BAFFLE_LOWER_STAND_HOLE_CENTER_Y
+                },
+                thickness: air::BAFFLE_STAND_HOLE_THICKNESS,
+            }
+        )
+    );
     // Upper-left
-    println!("{}", utils::gen_pill(&mut dxf_writer, &utils::Pill{
-      start: geom::Vec2{
-        x: air::BAFFLE_UL_STAND_HOLE_CENTER_X - air::BAFFLE_STAND_HOLE_LENGTH/2.0,
-        y: air::BAFFLE_UPPER_STAND_HOLE_CENTER_Y
-      },
-      end: geom::Vec2{
-        x: air::BAFFLE_UL_STAND_HOLE_CENTER_X + air::BAFFLE_STAND_HOLE_LENGTH/2.0,
-        y: air::BAFFLE_UPPER_STAND_HOLE_CENTER_Y
-      },
-      thickness: air::BAFFLE_STAND_HOLE_THICKNESS,
-    }));
+    println!(
+        "{}",
+        utils::gen_pill(
+            &mut dxf_writer,
+            &utils::Pill {
+                start: geom::Vec2 {
+                    x: air::BAFFLE_UL_STAND_HOLE_CENTER_X - air::BAFFLE_STAND_HOLE_LENGTH / 2.0,
+                    y: air::BAFFLE_UPPER_STAND_HOLE_CENTER_Y
+                },
+                end: geom::Vec2 {
+                    x: air::BAFFLE_UL_STAND_HOLE_CENTER_X + air::BAFFLE_STAND_HOLE_LENGTH / 2.0,
+                    y: air::BAFFLE_UPPER_STAND_HOLE_CENTER_Y
+                },
+                thickness: air::BAFFLE_STAND_HOLE_THICKNESS,
+            }
+        )
+    );
     // Lower-right
-    println!("{}", utils::gen_pill(&mut dxf_writer, &utils::Pill{
-      start: geom::Vec2{
-        x: air::BAFFLE_LR_STAND_HOLE_CENTER_X - air::BAFFLE_STAND_HOLE_LENGTH/2.0,
-        y: air::BAFFLE_LOWER_STAND_HOLE_CENTER_Y
-      },
-      end: geom::Vec2{
-        x: air::BAFFLE_LR_STAND_HOLE_CENTER_X + air::BAFFLE_STAND_HOLE_LENGTH/2.0,
-        y: air::BAFFLE_LOWER_STAND_HOLE_CENTER_Y
-      },
-      thickness: air::BAFFLE_STAND_HOLE_THICKNESS,
-    }));
+    println!(
+        "{}",
+        utils::gen_pill(
+            &mut dxf_writer,
+            &utils::Pill {
+                start: geom::Vec2 {
+                    x: air::BAFFLE_LR_STAND_HOLE_CENTER_X - air::BAFFLE_STAND_HOLE_LENGTH / 2.0,
+                    y: air::BAFFLE_LOWER_STAND_HOLE_CENTER_Y
+                },
+                end: geom::Vec2 {
+                    x: air::BAFFLE_LR_STAND_HOLE_CENTER_X + air::BAFFLE_STAND_HOLE_LENGTH / 2.0,
+                    y: air::BAFFLE_LOWER_STAND_HOLE_CENTER_Y
+                },
+                thickness: air::BAFFLE_STAND_HOLE_THICKNESS,
+            }
+        )
+    );
     // Upper-right
-    println!("{}", utils::gen_pill(&mut dxf_writer, &utils::Pill{
-      start: geom::Vec2{
-        x: air::BAFFLE_UR_STAND_HOLE_CENTER_X - air::BAFFLE_STAND_HOLE_LENGTH/2.0,
-        y: air::BAFFLE_UPPER_STAND_HOLE_CENTER_Y
-      },
-      end: geom::Vec2{
-        x: air::BAFFLE_UR_STAND_HOLE_CENTER_X + air::BAFFLE_STAND_HOLE_LENGTH/2.0,
-        y: air::BAFFLE_UPPER_STAND_HOLE_CENTER_Y
-      },
-      thickness: air::BAFFLE_STAND_HOLE_THICKNESS,
-    }));
-
+    println!(
+        "{}",
+        utils::gen_pill(
+            &mut dxf_writer,
+            &utils::Pill {
+                start: geom::Vec2 {
+                    x: air::BAFFLE_UR_STAND_HOLE_CENTER_X - air::BAFFLE_STAND_HOLE_LENGTH / 2.0,
+                    y: air::BAFFLE_UPPER_STAND_HOLE_CENTER_Y
+                },
+                end: geom::Vec2 {
+                    x: air::BAFFLE_UR_STAND_HOLE_CENTER_X + air::BAFFLE_STAND_HOLE_LENGTH / 2.0,
+                    y: air::BAFFLE_UPPER_STAND_HOLE_CENTER_Y
+                },
+                thickness: air::BAFFLE_STAND_HOLE_THICKNESS,
+            }
+        )
+    );
 
     // BENDLINES
     println!(
         "{}",
         dxf_writer.gen_bendline(geom::LineSeg {
-            p0: geom::Vec2 { x: air::BAFFLE_BEND_0_X, y: 0.0 },
+            p0: geom::Vec2 {
+                x: air::BAFFLE_BEND_0_X,
+                y: 0.0
+            },
             p1: geom::Vec2 {
                 x: air::BAFFLE_BEND_0_X,
                 y: air::BAFFLE_HEIGHT,
             },
         })
     );
-    let bend_1_x = air::BAFFLE_WIDTH/2.0 + air::BAFFLE_CENTER_WIDTH/2.0;
+    let bend_1_x = air::BAFFLE_WIDTH / 2.0 + air::BAFFLE_CENTER_WIDTH / 2.0;
     println!(
         "{}",
         dxf_writer.gen_bendline(geom::LineSeg {
-            p0: geom::Vec2 { x: bend_1_x, y: 0.0 },
+            p0: geom::Vec2 {
+                x: bend_1_x,
+                y: 0.0
+            },
             p1: geom::Vec2 {
                 x: bend_1_x,
                 y: air::BAFFLE_HEIGHT,
