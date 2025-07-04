@@ -24,3 +24,5 @@ target/
 **/*.swp
 
 **/*.dxf
+
+_out/
