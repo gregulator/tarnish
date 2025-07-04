@@ -170,6 +170,11 @@ pub fn scale(s: f64, v: &geom::Vec2) -> geom::Vec2 {
   return geom::Vec2{x: s*v.x, y: s*v.y};
 }
 
+// Returns v0 + s*v1
+pub fn madd(v0: &geom::Vec2, v1: &geom::Vec2, s: f64) -> geom::Vec2 {
+  return geom::Vec2{x: v0.x + s*v1.x, y: v0.y + s*v1.y};
+}
+
 pub fn copy(v: &geom::Vec2) -> geom::Vec2 {
   return geom::Vec2{x: v.x, y: v.y};
 }
@@ -187,3 +192,7 @@ pub fn normalize(v: &geom::Vec2) -> geom::Vec2 {
   return geom::Vec2{x: v.x/n, y: v.y/n};
 }
 
+
+pub fn transform_point(origin: &geom::Vec2, x_axis: &geom::Vec2, y_axis: &geom::Vec2, point: &geom::Vec2) -> geom::Vec2 {
+  return madd(&madd(origin, x_axis, point.x), y_axis, point.y);
+}

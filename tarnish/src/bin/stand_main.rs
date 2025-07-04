@@ -5,6 +5,7 @@
 // Baffle attachment holes
 // Finalize all dimensions.
 // Polycarbonate cover
+use tarnish::air;
 use tarnish::dxf;
 use tarnish::geom;
 use tarnish::utils;
@@ -15,7 +16,6 @@ const PI: f64 = std::f64::consts::PI;
 // use std::io::prelude::*;
 
 fn main() -> std::io::Result<()> {
-    let thickness = 40.0;
     let wing_length = 200.0;
     let middle_length = 400.0;
     let bend_offset = 150.0;
@@ -32,6 +32,17 @@ fn main() -> std::io::Result<()> {
     let spine3 = geom::Vec2{x: spine2.x + wing_length*f64::cos(side_angle),
                             y: 0.0};
 
+    let s0_a = utils::add(&spine0, &utils::scale(0.5*air::STAND_BAR_THICKNESS, &utils::perp2(&spine1, &spine0)));
+    let s1_a = utils::add(&spine1, &utils::scale(0.5*air::STAND_BAR_THICKNESS, &utils::perp2(&spine1, &spine0)));
+    let s2_a = utils::add(&spine2, &utils::scale(0.5*air::STAND_BAR_THICKNESS, &utils::perp2(&spine3, &spine2)));
+    let s3_a = utils::add(&spine3, &utils::scale(0.5*air::STAND_BAR_THICKNESS, &utils::perp2(&spine3, &spine2)));
+
+    let s0_b = utils::add(&spine0, &utils::scale(-0.5*air::STAND_BAR_THICKNESS, &utils::perp2(&spine1, &spine0)));
+    let s1_b = utils::add(&spine1, &utils::scale(-0.5*air::STAND_BAR_THICKNESS, &utils::perp2(&spine1, &spine0)));
+    let s2_b = utils::add(&spine2, &utils::scale(-0.5*air::STAND_BAR_THICKNESS, &utils::perp2(&spine3, &spine2)));
+    let s3_b = utils::add(&spine3, &utils::scale(-0.5*air::STAND_BAR_THICKNESS, &utils::perp2(&spine3, &spine2)));
+
+
     let total_middle_x = (spine1.x+spine2.x)/2.0;
 
 
@@ -44,17 +55,31 @@ fn main() -> std::io::Result<()> {
         },
     };
 
-    //let s0_a = utils::add(&spine0, &utils::scale(0.5*thickness, &utils::perp2(&spine1, &spine0)));
-    let s0_a = utils::add(&spine0, &utils::scale(0.5*thickness, &utils::perp2(&spine1, &spine0)));
-    let s1_a = utils::add(&spine1, &utils::scale(0.5*thickness, &utils::perp2(&spine1, &spine0)));
-    let s2_a = utils::add(&spine2, &utils::scale(0.5*thickness, &utils::perp2(&spine3, &spine2)));
-    let s3_a = utils::add(&spine3, &utils::scale(0.5*thickness, &utils::perp2(&spine3, &spine2)));
+    // Figure out the offset of the baffle stand holes from the ground & center line.
+    let baffle_lower_stand_hole_center_x = (air::BAFFLE_LL_STAND_HOLE_CENTER_X - air::BAFFLE_UL_STAND_HOLE_CENTER_X) / 2.0;
+    let baffle_ll_stand_hole_x_offset_to_center_line = air::BAFFLE_LL_STAND_HOLE_CENTER_X - baffle_lower_stand_hole_center_x;
+    let baffle_ll_stand_hole_y_offset_to_bend_line = air::BAFFLE_LOWER_STAND_HOLE_CENTER_Y - air::BAFFLE_PART_THICKNESS/2.0;
 
-    let s0_b = utils::add(&spine0, &utils::scale(-0.5*thickness, &utils::perp2(&spine1, &spine0)));
-    let s1_b = utils::add(&spine1, &utils::scale(-0.5*thickness, &utils::perp2(&spine1, &spine0)));
-    let s2_b = utils::add(&spine2, &utils::scale(-0.5*thickness, &utils::perp2(&spine3, &spine2)));
-    let s3_b = utils::add(&spine3, &utils::scale(-0.5*thickness, &utils::perp2(&spine3, &spine2)));
+    let bend0_a = utils::add(&s0_a, &utils::scale(bend_offset, &utils::normalize(&utils::sub(&spine1, &spine0))));
+    let bend0_b = utils::add(&s0_b, &utils::scale(bend_offset, &utils::normalize(&utils::sub(&spine1, &spine0))));
+    let bend_center = geom::Vec2{x:(bend0_a.x + bend0_b.x)/2.0, y: (bend0_a.y + bend0_b.y)/2.0};
+    // Project offsets to bend line
+    let left_bar_origin = &bend_center;
+    let left_bar_x_axis = &utils::normalize(&utils::sub(&spine1, &spine0));
+    let left_bar_y_axis = &utils::perp(left_bar_x_axis);
+    
+    let baffle_ll_hole_center = utils::transform_point(&left_bar_origin, &left_bar_x_axis, &left_bar_y_axis, &geom::Vec2{x: baffle_ll_stand_hole_x_offset_to_center_line, y: baffle_ll_stand_hole_y_offset_to_bend_line});
+    println!(
+        "{}",
+        dxf_writer.gen_circle(geom::Circle {
+            center: baffle_ll_hole_center,
+            radius: 5.0
+        })
+    );
 
+
+    // BAFFLE_LL_STAND_HOLE_CENTER_X is 
+    // Bolt hole offsets from the bend center n
     let b0 = geom::Vec2{x:s1_a.x+(s2_a.x-s1_a.x)/2.0 - stand_back_width/2.0, y:stand_depth};
     let b1 = geom::Vec2{x:s2_a.x-((s2_a.x-s1_a.x)/2.0 - stand_back_width/2.0), y:stand_depth};
 
@@ -120,6 +145,7 @@ fn main() -> std::io::Result<()> {
 
     // CUTOUTS
     // stud cutouts for crossover board
+
     let xover_hole_spacing_x = 170.0;
     let xover_hole_spacing_y = 117.5;
     let xover_hole_radius = 5.0;
@@ -197,26 +223,9 @@ fn main() -> std::io::Result<()> {
             notch_length: 1.0,
         })
     );
-    /*println!(
-        "{}",
-        dxf_writer.gen_polyline(geom::Polyline {
-            v: vec![
-                geom::PolylineVertex {
-                    point: utils::add(&s1_a, &geom::Vec2{x:thickness, y:0.0}),
-                    bulge: Some(-0.3),
-                },
-                geom::PolylineVertex {
-                    point: utils::add(&s2_a, &geom::Vec2{x:-thickness, y:0.0}),
-                    bulge: None,
-                },
-            ]
-        })
-    );*/
 
 
     // BENDLINES
-    let bend0_a = utils::add(&s0_a, &utils::scale(bend_offset, &utils::normalize(&utils::sub(&spine1, &spine0))));
-    let bend0_b = utils::add(&s0_b, &utils::scale(bend_offset, &utils::normalize(&utils::sub(&spine1, &spine0))));
     println!(
         "{}",
         dxf_writer.gen_bendline(geom::LineSeg {
