@@ -8,3 +8,4 @@ mv _out/* _out_backup/$D
 (cd tarnish && cargo run --bin=woofgasket_main > ../_out/woofgasket_$D.dxf)
 (cd tarnish && cargo run --bin=stand_main > ../_out/stand_$D.dxf)
 (cd tarnish && cargo run --bin=baffle_main > ../_out/baffle_$D.dxf)
+(cd tarnish && cargo run --bin=xovercover_main > ../_out/xovercover_$D.dxf)

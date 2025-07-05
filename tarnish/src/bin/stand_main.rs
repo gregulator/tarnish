@@ -157,8 +157,8 @@ fn main() -> std::io::Result<()> {
         &left_bar_x_axis,
         &left_bar_y_axis,
         &geom::Vec2 {
-          x: air::BAFFLE_STAND_HOLE_OFFSET_X,
-          y: baffle_lower_stand_hole_y_offset_to_bend_line,
+            x: air::BAFFLE_STAND_HOLE_OFFSET_X,
+            y: baffle_lower_stand_hole_y_offset_to_bend_line,
         },
     );
     let stand_ul_hole_center = utils::transform_point(
@@ -166,8 +166,8 @@ fn main() -> std::io::Result<()> {
         &left_bar_x_axis,
         &left_bar_y_axis,
         &geom::Vec2 {
-          x: -air::BAFFLE_STAND_HOLE_OFFSET_X,
-          y: baffle_upper_stand_hole_y_offset_to_bend_line,
+            x: -air::BAFFLE_STAND_HOLE_OFFSET_X,
+            y: baffle_upper_stand_hole_y_offset_to_bend_line,
         },
     );
     let stand_lr_hole_center = utils::transform_point(
@@ -175,8 +175,8 @@ fn main() -> std::io::Result<()> {
         &right_bar_x_axis,
         &right_bar_y_axis,
         &geom::Vec2 {
-          x: air::BAFFLE_STAND_HOLE_OFFSET_X,
-          y: baffle_lower_stand_hole_y_offset_to_bend_line,
+            x: air::BAFFLE_STAND_HOLE_OFFSET_X,
+            y: baffle_lower_stand_hole_y_offset_to_bend_line,
         },
     );
     let stand_ur_hole_center = utils::transform_point(
@@ -184,11 +184,10 @@ fn main() -> std::io::Result<()> {
         &right_bar_x_axis,
         &right_bar_y_axis,
         &geom::Vec2 {
-          x: -air::BAFFLE_STAND_HOLE_OFFSET_X,
-          y: baffle_upper_stand_hole_y_offset_to_bend_line,
+            x: -air::BAFFLE_STAND_HOLE_OFFSET_X,
+            y: baffle_upper_stand_hole_y_offset_to_bend_line,
         },
     );
-
 
     // BAFFLE_LL_STAND_HOLE_CENTER_X is
     // Bolt hole offsets from the bend center n
@@ -290,51 +289,45 @@ fn main() -> std::io::Result<()> {
         })
     );
 
-
     // stud cutouts for crossover board
-    let xover_hole_spacing_x = 170.0;
-    let xover_hole_spacing_y = 117.5;
-    let xover_hole_radius = 2.0;
-    let xover_center_y = 225.0;
-
     println!(
         "{}",
         dxf_writer.gen_circle(geom::Circle {
             center: geom::Vec2 {
-                x: total_middle_x - xover_hole_spacing_x / 2.0,
-                y: xover_center_y - xover_hole_spacing_y / 2.0,
+                x: total_middle_x - air::STAND_XOVER_HOLE_SPACING_X / 2.0,
+                y: air::STAND_XOVER_CENTER_Y - air::STAND_XOVER_HOLE_SPACING_Y / 2.0,
             },
-            radius: xover_hole_radius
+            radius: air::STAND_XOVER_HOLE_RADIUS
         })
     );
     println!(
         "{}",
         dxf_writer.gen_circle(geom::Circle {
             center: geom::Vec2 {
-                x: total_middle_x + xover_hole_spacing_x / 2.0,
-                y: xover_center_y - xover_hole_spacing_y / 2.0,
+                x: total_middle_x + air::STAND_XOVER_HOLE_SPACING_X / 2.0,
+                y: air::STAND_XOVER_CENTER_Y - air::STAND_XOVER_HOLE_SPACING_Y / 2.0,
             },
-            radius: xover_hole_radius
+            radius: air::STAND_XOVER_HOLE_RADIUS
         })
     );
     println!(
         "{}",
         dxf_writer.gen_circle(geom::Circle {
             center: geom::Vec2 {
-                x: total_middle_x + xover_hole_spacing_x / 2.0,
-                y: xover_center_y + xover_hole_spacing_y / 2.0,
+                x: total_middle_x + air::STAND_XOVER_HOLE_SPACING_X / 2.0,
+                y: air::STAND_XOVER_CENTER_Y + air::STAND_XOVER_HOLE_SPACING_Y / 2.0,
             },
-            radius: xover_hole_radius
+            radius: air::STAND_XOVER_HOLE_RADIUS
         })
     );
     println!(
         "{}",
         dxf_writer.gen_circle(geom::Circle {
             center: geom::Vec2 {
-                x: total_middle_x - xover_hole_spacing_x / 2.0,
-                y: xover_center_y + xover_hole_spacing_y / 2.0,
+                x: total_middle_x - air::STAND_XOVER_HOLE_SPACING_X / 2.0,
+                y: air::STAND_XOVER_CENTER_Y + air::STAND_XOVER_HOLE_SPACING_Y / 2.0,
             },
-            radius: xover_hole_radius
+            radius: air::STAND_XOVER_HOLE_RADIUS
         })
     );
 
