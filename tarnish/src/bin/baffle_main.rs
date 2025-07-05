@@ -35,18 +35,7 @@ fn main() -> std::io::Result<()> {
     let baffle_wing_width = (air::BAFFLE_WIDTH - air::BAFFLE_CENTER_WIDTH) / 2.0;
 
     let mut dxf_writer = dxf::DxfWriter::new();
-    //let p = Part {
-    //    outline: Shape::Rect(Rect {
-    //        ll: Vec2 { x: 0.0, y: 0.0 },
-    //        ur: Vec2 { x: 100.0, y: 100.0 },
-    //    }),
-    //    cutouts: Vec::new(),
-    //    bendlines: Vec::new(),
-    //};
-    //let serialized = serde_json::to_string(&p).unwrap();
-    // let mut file = File::create("out.dxf")?;
-    // write!(file, "{}{}", dxf::HEADER, serialized)?;
-    //println!("serialized = {}", serialized);
+
     let extent = geom::Bounds2 {
         min: geom::Vec2 { x: 0.0, y: 0.0 },
         max: geom::Vec2 {
@@ -470,14 +459,8 @@ fn main() -> std::io::Result<()> {
             },
         })
     );
-    //println!("{}", dxf::gen_circle(geom::Circle{
-    //  center: geom::Vec2{x: 0.0, y: 0.0},
-    //  radius: 100.0,
-    //}));
     println!("{}", dxf::ENTITIES_FOOTER);
     println!("{}", dxf::FOOTER);
-    //println!("{}", dxf::gen_header(extent));
-    //println!("{}", dxf::EMPTY2);
 
     Ok(())
 }

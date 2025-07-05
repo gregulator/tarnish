@@ -1,6 +1,10 @@
 // PARAMETERS
 
+const PI: f64 = std::f64::consts::PI;
+
 pub const BAFFLE_PART_THICKNESS: f64 = 3.175;
+
+pub const BAFFLE_SIDE_ANGLE: f64 = 60.0 * PI / 180.0;
 
 // Overall baffle width (pre-bend).
 pub const BAFFLE_WIDTH: f64 = 760.0;
@@ -59,17 +63,31 @@ pub const WOOFTRIM_THICKNESS: f64 = 25.0;
 pub const WOOFGASKET_THICKNESS: f64 = 16.0;
 
 // Woofer trim bolt hole diameter.
+// Needs to fit #8-32 barrel nut w/ 13/64" diameter.
+// SO 5.159375mm + oversize a bit.
 // For the metal trim it doesn't really matter since hardware gets inserted.
 // But this is also used for the gasket, so should be oversized.
-pub const WOOFTRIM_BOLT_HOLE_DIAMETER: f64 = 6.0;
+pub const WOOFTRIM_BOLT_HOLE_DIAMETER: f64 = 6.16;
 
-pub const BAFFLE_FR_BOLT_HOLE_DIAMETER: f64 = 5.0;
+// Needs to fit #4 hex standoff w/ 3/16" short diagonal
+// See: https://www.gigacalculator.com/calculators/hexagon-calculator.php
+// 5.5mm long diagonal + oversize a little bit.
+pub const BAFFLE_FR_BOLT_HOLE_DIAMETER: f64 = 6.5;
 
 pub const BAFFLE_LOWER_STAND_HOLE_CENTER_Y: f64 = 50.0;
 pub const BAFFLE_UPPER_STAND_HOLE_CENTER_Y: f64 = 150.0;
 pub const BAFFLE_STAND_HOLE_OFFSET_X: f64 = -4.0;
 pub const BAFFLE_STAND_HOLE_LENGTH: f64 = 12.5;
 pub const BAFFLE_STAND_HOLE_THICKNESS: f64 = 8.0;
+
+pub const STAND_WING_LENGTH: f64 = 200.0;
+pub const STAND_DEPTH: f64 = 450.0;
+pub const STAND_BACK_WIDTH: f64 = 300.0;
+
+pub const STAND_TERMINAL_SPACING: f64 = 50.0;
+pub const STAND_TERMINAL_RADIUS: f64 = 4.8; // ! 3/16" -> 4.8mm
+pub const STAND_TERMINAL_NOTCH: f64 = 1.0; // !
+pub const STAND_TERMINAL_Y: f64 = 450.0;
 
 // COMPUTED PARAMETERS
 pub const WOOFER_BOLT_CIRCLE_RADIUS: f64 = WOOFER_BOLT_CIRCLE_DIAMETER / 2.0;
@@ -114,14 +132,17 @@ pub const BAFFLE_HEIGHT: f64 = FRTRIM_UR_Y + BAFFLE_TOP_GAP_Y;
 pub const BAFFLE_LOWER_FR_CENTER_Y: f64 = FRTRIM_LL_Y + FRTRIM_PADDING_Y + FR_OUTER_LENGTH / 2.0;
 pub const BAFFLE_UPPER_FR_CENTER_Y: f64 = BAFFLE_LOWER_FR_CENTER_Y + FR_FR_GAP + FR_OUTER_LENGTH;
 
-pub const BAFFLE_LL_STAND_HOLE_CENTER_X: f64 = BAFFLE_BEND_0_X / 2.0 - BAFFLE_STAND_HOLE_OFFSET_X;
-
-pub const BAFFLE_UL_STAND_HOLE_CENTER_X: f64 = BAFFLE_BEND_0_X / 2.0 + BAFFLE_STAND_HOLE_OFFSET_X;
-pub const BAFFLE_LR_STAND_HOLE_CENTER_X: f64 =
-    BAFFLE_WIDTH - BAFFLE_BEND_0_X / 2.0 + BAFFLE_STAND_HOLE_OFFSET_X;
-pub const BAFFLE_UR_STAND_HOLE_CENTER_X: f64 =
-    BAFFLE_WIDTH - BAFFLE_BEND_0_X / 2.0 - BAFFLE_STAND_HOLE_OFFSET_X;
 pub const BAFFLE_BEND_0_X: f64 = (BAFFLE_WIDTH - BAFFLE_CENTER_WIDTH) / 2.0;
+
+pub const BAFFLE_LEFT_STAND_HOLE_CENTER_X: f64 = BAFFLE_BEND_0_X/2.0;
+pub const BAFFLE_LL_STAND_HOLE_CENTER_X: f64 = BAFFLE_LEFT_STAND_HOLE_CENTER_X - BAFFLE_STAND_HOLE_OFFSET_X;
+pub const BAFFLE_UL_STAND_HOLE_CENTER_X: f64 = BAFFLE_LEFT_STAND_HOLE_CENTER_X + BAFFLE_STAND_HOLE_OFFSET_X;
+
+pub const BAFFLE_RIGHT_STAND_HOLE_CENTER_X: f64 = BAFFLE_WIDTH - BAFFLE_BEND_0_X/2.0;
+pub const BAFFLE_LR_STAND_HOLE_CENTER_X: f64 = BAFFLE_RIGHT_STAND_HOLE_CENTER_X + BAFFLE_STAND_HOLE_OFFSET_X;
+pub const BAFFLE_UR_STAND_HOLE_CENTER_X: f64 =
+    BAFFLE_RIGHT_STAND_HOLE_CENTER_X - BAFFLE_STAND_HOLE_OFFSET_X;
+
 
 // Thickness of stand attachment bar. Needs to be wide enough to cover pills.
 pub const STAND_BAR_THICKNESS: f64 = (BAFFLE_LL_STAND_HOLE_CENTER_X
@@ -130,4 +151,11 @@ pub const STAND_BAR_THICKNESS: f64 = (BAFFLE_LL_STAND_HOLE_CENTER_X
     - (BAFFLE_UL_STAND_HOLE_CENTER_X
         - BAFFLE_STAND_HOLE_LENGTH / 2.0
         - BAFFLE_STAND_HOLE_THICKNESS / 2.0)
-    + 8.0;
+    + 20.0;
+
+// Must match the distance between the baffle stand hole x-axes post-bend.
+pub fn stand_center_spine_length() -> f64 {
+  BAFFLE_CENTER_WIDTH + BAFFLE_BEND_0_X*f64::cos(BAFFLE_SIDE_ANGLE)
+}
+
+
