@@ -2,19 +2,11 @@
 // cargo run --bin=baffle_main | tee baffle.dxf
 
 // TODO:
-// - Set units to MM (Done but SCS still checks)
-// - Rounded rectangles
-// - Bolt hole rings
-// - Gen handles (not really necessary)
-// - Polygons
 // - Splines
 use tarnish::air;
 use tarnish::dxf;
 use tarnish::geom;
 use tarnish::utils;
-
-// use std::fs::File;
-// use std::io::prelude::*;
 
 fn main() -> std::io::Result<()> {
     // PARAMETERS

@@ -6,9 +6,6 @@ use tarnish::dxf;
 use tarnish::geom;
 use tarnish::utils;
 
-// use std::fs::File;
-// use std::io::prelude::*;
-
 fn main() -> std::io::Result<()> {
     let mut dxf_writer = dxf::DxfWriter::new();
     let extent = geom::Bounds2 {

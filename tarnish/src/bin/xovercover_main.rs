@@ -1,16 +1,9 @@
 // Run with:
 // cargo run --bin=baffle_main | tee baffle.dxf
 
-// TODO:
-// Baffle attachment holes
-// Finalize all dimensions.
-// Polycarbonate cover
 use tarnish::air;
 use tarnish::dxf;
 use tarnish::geom;
-
-// use std::fs::File;
-// use std::io::prelude::*;
 
 fn main() -> std::io::Result<()> {
     let mut dxf_writer = dxf::DxfWriter::new();

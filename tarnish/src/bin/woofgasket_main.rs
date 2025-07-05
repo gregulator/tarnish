@@ -6,9 +6,6 @@ use tarnish::dxf;
 use tarnish::geom;
 use tarnish::utils;
 
-// use std::fs::File;
-// use std::io::prelude::*;
-
 fn main() -> std::io::Result<()> {
     let mut dxf_writer = dxf::DxfWriter::new();
     let extent = geom::Bounds2 {
@@ -37,26 +34,40 @@ fn main() -> std::io::Result<()> {
 
     // CUTOUTS
 
-    // BIG HOLE
+    // STAND MOUNTING HOLES
+    // Lower
     println!(
         "{}",
-        dxf_writer.gen_circle(geom::Circle {
-            center: utils::origin(),
-            radius: air::WOOFGASKET_CUTOUT_RADIUS
-        })
-    );
-    println!(
-        "{}",
-        utils::gen_bolt_circle(
+        utils::gen_pill(
             &mut dxf_writer,
-            utils::BoltCircle {
-                ring_circle: geom::Circle {
-                    center: utils::origin(),
-                    radius: air::WOOFER_BOLT_CIRCLE_RADIUS
+            &utils::Pill {
+                start: geom::Vec2 {
+                    x: air::BAFFLE_LL_STAND_HOLE_CENTER_X - air::BAFFLE_STAND_HOLE_LENGTH / 2.0,
+                    y: air::BAFFLE_LOWER_STAND_HOLE_CENTER_Y
                 },
-                num_holes: 8,
-                hole_radius: air::WOOFGASKET_BOLT_HOLE_RADIUS,
-                angle_offset: 0.0,
+                end: geom::Vec2 {
+                    x: air::BAFFLE_LL_STAND_HOLE_CENTER_X + air::BAFFLE_STAND_HOLE_LENGTH / 2.0,
+                    y: air::BAFFLE_LOWER_STAND_HOLE_CENTER_Y
+                },
+                thickness: air::BAFFLE_STAND_HOLE_THICKNESS,
+            }
+        )
+    );
+    // Upper
+    println!(
+        "{}",
+        utils::gen_pill(
+            &mut dxf_writer,
+            &utils::Pill {
+                start: geom::Vec2 {
+                    x: air::BAFFLE_UL_STAND_HOLE_CENTER_X - air::BAFFLE_STAND_HOLE_LENGTH / 2.0,
+                    y: air::BAFFLE_UPPER_STAND_HOLE_CENTER_Y
+                },
+                end: geom::Vec2 {
+                    x: air::BAFFLE_UL_STAND_HOLE_CENTER_X + air::BAFFLE_STAND_HOLE_LENGTH / 2.0,
+                    y: air::BAFFLE_UPPER_STAND_HOLE_CENTER_Y
+                },
+                thickness: air::BAFFLE_STAND_HOLE_THICKNESS,
             }
         )
     );
