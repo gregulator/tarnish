@@ -146,7 +146,7 @@ fn main() -> std::io::Result<()> {
 
     let right_bar_origin = &bend1_center;
     let right_bar_y_axis = &utils::normalize(&utils::sub(&spine3, &spine2));
-    let right_bar_x_axis = &utils::perp(left_bar_y_axis);
+    let right_bar_x_axis = &utils::perp(right_bar_y_axis);
 
     let stand_ll_hole_center = utils::transform_point(
         &left_bar_origin,
