@@ -153,6 +153,56 @@ pub struct TerminalHoleWithNotch {
     pub notch_length: f64,
 }
 
+// Fixes positioning & sizing bugs with gen_terminal_hole_with_notch. Leaving
+// the original unchanged until the air models are updated.
+pub fn gen_terminal_hole_with_notch2(
+    dxf_writer: &mut dxf::DxfWriter,
+    thwn: &TerminalHoleWithNotch,
+) -> std::string::String {
+    let start = geom::Vec2 {
+        x: thwn.hole_circle.center.x - thwn.notch_length,
+        y: thwn.hole_circle.center.y + thwn.hole_circle.radius,
+    };
+    return dxf_writer.gen_polyline(geom::Polyline {
+        v: vec![
+            geom::PolylineVertex {
+                point: copy(&start),
+                bulge: None,
+            },
+            geom::PolylineVertex {
+                point: add(
+                    &start,
+                    &geom::Vec2 {
+                        x: 0.0,
+                        y: thwn.notch_length,
+                    },
+                ),
+                bulge: None,
+            },
+            geom::PolylineVertex {
+                point: add(
+                    &start,
+                    &geom::Vec2 {
+                        x: thwn.notch_length,
+                        y: thwn.notch_length,
+                    },
+                ),
+                bulge: None,
+            },
+            geom::PolylineVertex {
+                point: add(
+                    &start,
+                    &geom::Vec2 {
+                        x: thwn.notch_length,
+                        y: 0.0,
+                    },
+                ),
+                bulge: Some(-4.0 * thwn.hole_circle.radius / thwn.notch_length),
+            },
+        ],
+    });
+}
+
 pub fn gen_terminal_hole_with_notch(
     dxf_writer: &mut dxf::DxfWriter,
     thwn: &TerminalHoleWithNotch,

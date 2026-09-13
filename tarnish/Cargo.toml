@@ -47,3 +47,7 @@ path = "src/bin/supercube/a_frontpanel_main.rs"
 [[bin]]
 name = "supercube_b_cavity_main"
 path = "src/bin/supercube/b_cavity_main.rs"
+
+[[bin]]
+name = "supercube_f_backpanel_main"
+path = "src/bin/supercube/f_backpanel_main.rs"
