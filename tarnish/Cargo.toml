@@ -41,5 +41,9 @@ name = "air_standgasket_main"
 path = "src/bin/air/standgasket_main.rs"
 
 [[bin]]
+name = "supercube_a_frontpanel_main"
+path = "src/bin/supercube/a_frontpanel_main.rs"
+
+[[bin]]
 name = "supercube_b_cavity_main"
 path = "src/bin/supercube/b_cavity_main.rs"
