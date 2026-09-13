@@ -113,6 +113,107 @@ pub fn gen_rounded_rect(
     });
 }
 
+// Like a RoundedRect but each corner can have a different radius.
+// Use negative radius to bulge in the other direction.
+pub struct RoundedCornerRect {
+    pub rect: geom::Rect,
+    pub ll_round_radius: f64,
+    pub ul_round_radius: f64,
+    pub ur_round_radius: f64,
+    pub lr_round_radius: f64,
+}
+
+pub fn gen_rounded_corner_rect(
+    dxf_writer: &mut dxf::DxfWriter,
+    rounded_corner_rect: &RoundedCornerRect,
+) -> std::string::String {
+    let ll = &rounded_corner_rect.rect.ll;
+    let ur = &rounded_corner_rect.rect.ur;
+    let ul = geom::Vec2 { x: ll.x, y: ur.y };
+    let lr = geom::Vec2 { x: ur.x, y: ll.y };
+    let ll_round_radius = rounded_corner_rect.ll_round_radius;
+    let ur_round_radius = rounded_corner_rect.ur_round_radius;
+    let ul_round_radius = rounded_corner_rect.ul_round_radius;
+    let lr_round_radius = rounded_corner_rect.lr_round_radius;
+
+    let mut ll_bulge: f64 = 0.42;
+    if ll_round_radius > 0.0 {
+      ll_bulge = -0.42;
+    }
+    let mut ul_bulge: f64 = 0.42;
+    if ul_round_radius > 0.0 {
+      ul_bulge = -0.42;
+    }
+    let mut ur_bulge: f64 = 0.42;
+    if ur_round_radius > 0.0 {
+      ur_bulge = -0.42;
+    }
+    let mut lr_bulge: f64 = 0.42;
+    if lr_round_radius > 0.0 {
+      lr_bulge = -0.42;
+    }
+    return dxf_writer.gen_polyline(geom::Polyline {
+        v: vec![
+            geom::PolylineVertex {
+                point: geom::Vec2 {
+                    x: ll.x,
+                    y: ll.y + ll_round_radius.abs(),
+                },
+                bulge: None,
+            },
+            geom::PolylineVertex {
+                point: geom::Vec2 {
+                    x: ul.x,
+                    y: ul.y - ul_round_radius.abs(),
+                },
+                bulge: Some(ul_bulge),
+            },
+            geom::PolylineVertex {
+                point: geom::Vec2 {
+                    x: ul.x + ul_round_radius.abs(),
+                    y: ul.y,
+                },
+                bulge: None,
+            },
+            geom::PolylineVertex {
+                point: geom::Vec2 {
+                    x: ur.x - ur_round_radius.abs(),
+                    y: ur.y,
+                },
+                bulge: Some(ur_bulge),
+            },
+            geom::PolylineVertex {
+                point: geom::Vec2 {
+                    x: ur.x,
+                    y: ur.y - ur_round_radius.abs(),
+                },
+                bulge: None,
+            },
+            geom::PolylineVertex {
+                point: geom::Vec2 {
+                    x: lr.x,
+                    y: lr.y + lr_round_radius.abs(),
+                },
+                bulge: Some(lr_bulge),
+            },
+            geom::PolylineVertex {
+                point: geom::Vec2 {
+                    x: lr.x - lr_round_radius.abs(),
+                    y: lr.y,
+                },
+                bulge: None,
+            },
+            geom::PolylineVertex {
+                point: geom::Vec2 {
+                    x: ll.x + ll_round_radius.abs(),
+                    y: lr.y,
+                },
+                bulge: Some(ll_bulge),
+            },
+        ],
+    });
+}
+
 pub struct Pill {
     pub start: geom::Vec2,
     pub end: geom::Vec2,

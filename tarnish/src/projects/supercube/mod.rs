@@ -41,6 +41,12 @@ pub const TERMINAL_SPACING: f64 = 50.0;
 pub const TERMINAL_RADIUS: f64 = 12.5/2.0; // Post is 11.5
 pub const TERMINAL_Y: f64 = -CAVITY_HEIGHT/2.0 + TERMINAL_DIST_FROM_CAVITY_BOTTOM + TERMINAL_RADIUS;
 
+// Tweeter
+pub const TWEETER_CUTOUT_RADIUS: f64 = 40.0; // Scanspeak D2904/980000 - 73.5mm cutout -> 80/2 -> 40
+pub const TWEETER_MOUNT_RADIUS: f64 = 50.0; // TODO: Check this ??? Scanspeak D2904/980000 - 104.3mm outer radius -> 120/2 -> 60
+// Width of the four bridges that connect the tweeter mounting circle to the outer wall.
+pub const TWEETER_MOUNT_BRIDGE_THICKNESS: f64 = 12.5;
+
 // Crossover board
 pub const XOVER_BOARD_WIDTH: f64 = 125.0;
 pub const XOVER_BOARD_HEIGHT: f64 = 80.0;
