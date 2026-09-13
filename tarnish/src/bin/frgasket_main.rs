@@ -1,7 +1,7 @@
 // Run with:
 // cargo run --bin=wooftrim_main | tee wooftrim.dxf
 
-use tarnish::air;
+use tarnish::projects::air;
 use tarnish::dxf;
 use tarnish::geom;
 use tarnish::utils;

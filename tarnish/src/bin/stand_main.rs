@@ -1,7 +1,7 @@
 // Run with:
 // cargo run --bin=baffle_main | tee baffle.dxf
 
-use tarnish::air;
+use tarnish::projects::air;
 use tarnish::dxf;
 use tarnish::geom;
 use tarnish::utils;
