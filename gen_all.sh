@@ -2,11 +2,11 @@ D=`date "+%Y%m%d_%H%M%S"`
 
 mkdir -p _out_backup/$D
 mv _out/* _out_backup/$D
-(cd tarnish && cargo run --bin=wooftrim_main > ../_out/wooftrim_$D.dxf)
-(cd tarnish && cargo run --bin=frgasket_main > ../_out/frgasket_$D.dxf)
-(cd tarnish && cargo run --bin=frtrim_main > ../_out/frtrim_$D.dxf)
-(cd tarnish && cargo run --bin=woofgasket_main > ../_out/woofgasket_$D.dxf)
-(cd tarnish && cargo run --bin=stand_main > ../_out/stand_$D.dxf)
-(cd tarnish && cargo run --bin=baffle_main > ../_out/baffle_$D.dxf)
-(cd tarnish && cargo run --bin=xovercover_main > ../_out/xovercover_$D.dxf)
-(cd tarnish && cargo run --bin=standgasket_main > ../_out/standgasket_$D.dxf)
+(cd tarnish && cargo run --bin=air_wooftrim_main > ../_out/air_wooftrim_$D.dxf)
+(cd tarnish && cargo run --bin=air_frgasket_main > ../_out/air_frgasket_$D.dxf)
+(cd tarnish && cargo run --bin=air_frtrim_main > ../_out/air_frtrim_$D.dxf)
+(cd tarnish && cargo run --bin=air_woofgasket_main > ../_out/air_woofgasket_$D.dxf)
+(cd tarnish && cargo run --bin=air_stand_main > ../_out/air_stand_$D.dxf)
+(cd tarnish && cargo run --bin=air_baffle_main > ../_out/air_baffle_$D.dxf)
+(cd tarnish && cargo run --bin=air_xovercover_main > ../_out/air_xovercover_$D.dxf)
+(cd tarnish && cargo run --bin=air_standgasket_main > ../_out/air_standgasket_$D.dxf)
