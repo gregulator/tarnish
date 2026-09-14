@@ -7,14 +7,14 @@
 const SQRT_2: f64 = std::f64::consts::SQRT_2;
 
 // Outer dimensions of the speaker.
-pub const OUTER_WIDTH: f64 = 200.0;
-pub const OUTER_HEIGHT: f64 = 200.0;
+pub const OUTER_WIDTH: f64 = 215.0;
+pub const OUTER_HEIGHT: f64 = 215.0;
 
 // Thickness of outer wall.
-pub const OUTER_WALL_THICKNESS: f64 = 12.5;
+pub const OUTER_WALL_THICKNESS: f64 = 12.0;
 
 // Rounding of the outer corners.
-pub const OUTER_ROUNDING: f64 = 50.0;
+pub const OUTER_ROUNDING: f64 = 48.0;
 
 // Computed dimensions of cavity
 pub const CAVITY_WIDTH: f64 = OUTER_WIDTH - 2.0*OUTER_WALL_THICKNESS;
@@ -22,7 +22,7 @@ pub const CAVITY_HEIGHT: f64 = OUTER_HEIGHT - 2.0*OUTER_WALL_THICKNESS;
 
 // Rounding of the cavity corners.
 // Intentionally beefy at the corners.
-pub const CAVITY_ROUNDING: f64 = 50.0;
+pub const CAVITY_ROUNDING: f64 = 40.0;
 
 // Thickness of front panel wall.
 // This is slightly thicker than the wood walls.
@@ -47,6 +47,18 @@ pub const TWEETER_MOUNT_RADIUS: f64 = 50.0; // TODO: Check this ??? Scanspeak D2
 // Width of the four bridges that connect the tweeter mounting circle to the outer wall.
 pub const TWEETER_MOUNT_BRIDGE_THICKNESS: f64 = 12.5;
 
+// Woofer
+pub const WOOFER_CUTOUT_RADIUS: f64 = 65.0; //TODO: Check this.  Scanspeak D2904/980000 - 126mm cutout -> 134/2 -> 67
+//pub const WOOFER_MOUNT_RADIUS: f64 = 68.0; // TODO: Check this ??? Scanspeak D2904/980000 - 104.3mm outer radius -> 120/2 -> 60
+pub const WOOFER_MOUNT_RADIUS: f64 = 78.0; // TODO: Check this ??? Scanspeak D2904/980000 - 104.3mm outer radius -> 120/2 -> 60
+// Width of the four bridges that connect the tweeter mounting circle to the outer wall.
+pub const WOOFER_MOUNT_BRIDGE_THICKNESS: f64 = 14.0;
+
+// Outer radius of the woofer tube.
+// Because of the bridge offsets, this isn't exact and should be measured for correctness in CAD software.
+pub const TUBE_OUTER_RADIUS: f64 = 84.0; // TODO: Check this ??? Scanspeak D2904/980000 - 104.3mm outer radius -> 120/2 -> 60
+
+pub const TUBE_INNER_RADIUS: f64 = 80.0; //TODO: Check this.  Scanspeak D2904/980000 - 126mm cutout -> 134/2 -> 67
 // Crossover board
 pub const XOVER_BOARD_WIDTH: f64 = 125.0;
 pub const XOVER_BOARD_HEIGHT: f64 = 80.0;

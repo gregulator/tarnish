@@ -53,5 +53,9 @@ name = "supercube_c_tweetermount_main"
 path = "src/bin/supercube/c_tweetermount_main.rs"
 
 [[bin]]
+name = "supercube_d_woofermount_main"
+path = "src/bin/supercube/d_woofermount_main.rs"
+
+[[bin]]
 name = "supercube_f_backpanel_main"
 path = "src/bin/supercube/f_backpanel_main.rs"
