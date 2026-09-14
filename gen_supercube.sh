@@ -8,3 +8,4 @@ mv _out/* _out_backup/$D
 (cd tarnish && cargo run --bin=supercube_d_woofermount_main > ../_out/supercube_d_woofermount_$D.dxf)
 (cd tarnish && cargo run --bin=supercube_e_tube_main > ../_out/supercube_e_tube_$D.dxf)
 (cd tarnish && cargo run --bin=supercube_f_backpanel_main > ../_out/supercube_f_backpanel_$D.dxf)
+(cd tarnish && cargo run --bin=supercube_g_xover_main > ../_out/supercube_g_xover_$D.dxf)

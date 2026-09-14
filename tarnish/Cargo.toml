@@ -63,3 +63,7 @@ path = "src/bin/supercube/e_tube_main.rs"
 [[bin]]
 name = "supercube_f_backpanel_main"
 path = "src/bin/supercube/f_backpanel_main.rs"
+
+[[bin]]
+name = "supercube_g_xover_main"
+path = "src/bin/supercube/g_xover_main.rs"
