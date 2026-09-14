@@ -1,8 +1,6 @@
 // Run with:
 // cargo run --bin=supercube_d_woofermount_main | tee supercube_d_woofermount.dxf
 
-// TODO: Add pilot holes
-
 use tarnish::projects::supercube;
 use tarnish::dxf;
 use tarnish::geom;
@@ -51,7 +49,7 @@ fn main() -> std::io::Result<()> {
         &dxf_writer.gen_circle(
             geom::Circle {
                center: utils::origin(),
-               radius: supercube::WOOFER_CUTOUT_RADIUS,
+               radius: supercube::TUBE_INNER_RADIUS,
             }
         )
     );
@@ -149,27 +147,6 @@ fn main() -> std::io::Result<()> {
             }
         )
     );
-
-    /*
-    // Cavity
-    println!(
-        "{}",
-        utils::gen_rounded_rect(
-            &mut dxf_writer,
-            &utils::RoundedRect {
-                ll: geom::Vec2 {
-                    x: -supercube::CAVITY_WIDTH / 2.0,
-                    y: -supercube::CAVITY_HEIGHT / 2.0
-                },
-                ur: geom::Vec2 {
-                    x: supercube::CAVITY_WIDTH / 2.0,
-                    y: supercube::CAVITY_HEIGHT / 2.0
-                },
-                round_radius: supercube::CAVITY_ROUNDING
-            }
-        )
-    );
-    */
 
     println!("{}", dxf::ENTITIES_FOOTER);
     println!("{}", dxf::FOOTER);

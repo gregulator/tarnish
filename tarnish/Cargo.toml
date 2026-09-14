@@ -57,5 +57,9 @@ name = "supercube_d_woofermount_main"
 path = "src/bin/supercube/d_woofermount_main.rs"
 
 [[bin]]
+name = "supercube_e_tube_main"
+path = "src/bin/supercube/e_tube_main.rs"
+
+[[bin]]
 name = "supercube_f_backpanel_main"
 path = "src/bin/supercube/f_backpanel_main.rs"

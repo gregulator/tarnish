@@ -7,8 +7,8 @@
 const SQRT_2: f64 = std::f64::consts::SQRT_2;
 
 // Outer dimensions of the speaker.
-pub const OUTER_WIDTH: f64 = 215.0;
-pub const OUTER_HEIGHT: f64 = 215.0;
+pub const OUTER_WIDTH: f64 = 220.0;
+pub const OUTER_HEIGHT: f64 = 220.0;
 
 // Thickness of outer wall.
 pub const OUTER_WALL_THICKNESS: f64 = 12.0;
@@ -56,7 +56,7 @@ pub const WOOFER_MOUNT_BRIDGE_THICKNESS: f64 = 14.0;
 
 // Outer radius of the woofer tube.
 // Because of the bridge offsets, this isn't exact and should be measured for correctness in CAD software.
-pub const TUBE_OUTER_RADIUS: f64 = 84.0; // TODO: Check this ??? Scanspeak D2904/980000 - 104.3mm outer radius -> 120/2 -> 60
+pub const TUBE_OUTER_RADIUS: f64 = 86.0; // TODO: Check this ??? Scanspeak D2904/980000 - 104.3mm outer radius -> 120/2 -> 60
 
 pub const TUBE_INNER_RADIUS: f64 = 80.0; //TODO: Check this.  Scanspeak D2904/980000 - 126mm cutout -> 134/2 -> 67
 // Crossover board
