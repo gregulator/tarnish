@@ -249,10 +249,108 @@ pub fn gen_pill(dxf_writer: &mut dxf::DxfWriter, pill: &Pill) -> std::string::St
     });
 }
 
+pub struct CircleWithTwoNotches {
+    pub hole_circle: geom::Circle,
+    pub notch_length: f64,
+    pub notch_height: f64,
+}
+
+pub fn gen_circle_with_two_notches(
+    dxf_writer: &mut dxf::DxfWriter,
+    thwn: &CircleWithTwoNotches,
+) -> std::string::String {
+    let start = geom::Vec2 {
+        x: thwn.hole_circle.center.x - thwn.notch_length/2.0,
+        y: thwn.hole_circle.center.y + thwn.hole_circle.radius,
+    };
+    let bottom_start = geom::Vec2 {
+        x: thwn.hole_circle.center.x + thwn.notch_length/2.0,
+        y: thwn.hole_circle.center.y - thwn.hole_circle.radius,
+    };
+    return dxf_writer.gen_polyline(geom::Polyline {
+        v: vec![
+            // Upper notch
+            geom::PolylineVertex {
+                point: copy(&start),
+                bulge: None,
+            },
+            geom::PolylineVertex {
+                point: add(
+                    &start,
+                    &geom::Vec2 {
+                        x: 0.0,
+                        y: thwn.notch_height,
+                    },
+                ),
+                bulge: None,
+            },
+            geom::PolylineVertex {
+                point: add(
+                    &start,
+                    &geom::Vec2 {
+                        x: thwn.notch_length,
+                        y: thwn.notch_height,
+                    },
+                ),
+                bulge: None,
+            },
+            // right side
+            geom::PolylineVertex {
+                point: add(
+                    &start,
+                    &geom::Vec2 {
+                        x: thwn.notch_length,
+                        y: 0.0,
+                    },
+                ),
+                bulge: Some(-0.86), // TODO: Generalize
+            },
+            // Lower notch
+            geom::PolylineVertex {
+                point: copy(&bottom_start),
+                bulge: None,
+            },
+            geom::PolylineVertex {
+                point: add(
+                    &bottom_start,
+                    &geom::Vec2 {
+                        x: 0.0,
+                        y: -thwn.notch_height,
+                    },
+                ),
+                bulge: None,
+            },
+            geom::PolylineVertex {
+                point: add(
+                    &bottom_start,
+                    &geom::Vec2 {
+                        x: -thwn.notch_length,
+                        y: -thwn.notch_height,
+                    },
+                ),
+                bulge: None,
+            },
+            // right side
+            geom::PolylineVertex {
+                point: add(
+                    &bottom_start,
+                    &geom::Vec2 {
+                        x: -thwn.notch_length,
+                        y: 0.0,
+                    },
+                ),
+                bulge: Some(-0.86), // TODO: Generalize
+            },
+
+        ],
+    });
+}
+
 pub struct TerminalHoleWithNotch {
     pub hole_circle: geom::Circle,
     pub notch_length: f64,
 }
+
 
 // Fixes positioning & sizing bugs with gen_terminal_hole_with_notch. Leaving
 // the original unchanged until the air models are updated.

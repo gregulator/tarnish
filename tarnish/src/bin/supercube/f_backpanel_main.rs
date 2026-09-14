@@ -33,19 +33,19 @@ fn main() -> std::io::Result<()> {
             &mut dxf_writer,
             &utils::RoundedRect {
                 ll: geom::Vec2 {
-                    x: -supercube::OUTER_WIDTH / 2.0,
-                    y: -supercube::OUTER_HEIGHT / 2.0
+                    x: -supercube::OUTER_WIDTH / 2.0 - supercube::VENEER_WIDTH,
+                    y: -supercube::OUTER_HEIGHT / 2.0 - supercube::VENEER_WIDTH
                 },
                 ur: geom::Vec2 {
-                    x: supercube::OUTER_WIDTH / 2.0,
-                    y: supercube::OUTER_HEIGHT / 2.0
+                    x: supercube::OUTER_WIDTH / 2.0 + supercube::VENEER_WIDTH,
+                    y: supercube::OUTER_HEIGHT / 2.0 + supercube::VENEER_WIDTH
                 },
                 round_radius: supercube::OUTER_ROUNDING
             }
         )
     );
 
-    // CUTOUTS
+
     // Screw holes - should be countersunk
     println!(
         "{}",
@@ -57,7 +57,7 @@ fn main() -> std::io::Result<()> {
                   radius: supercube::FRONT_PANEL_BOLT_CIRCLE_RADIUS,
                 },
                 num_holes: 4,
-                hole_radius: 5.0,
+                hole_radius: 3.0,
                 angle_offset: 45.0,
             }
         )
@@ -105,8 +105,8 @@ fn main() -> std::io::Result<()> {
         &dxf_writer.gen_circle(
             geom::Circle {
                center: geom::Vec2 {
-                    x: supercube::XOVER_BOARD_WIDTH/2.0,
-                    y: supercube::XOVER_BOARD_HEIGHT/2.0,
+                    x: supercube::XOVER_BOARD_POST_WIDTH/2.0,
+                    y: supercube::XOVER_BOARD_POST_HEIGHT/2.0,
                 },
                 radius: 4.0
             }
@@ -117,8 +117,8 @@ fn main() -> std::io::Result<()> {
         &dxf_writer.gen_circle(
             geom::Circle {
                center: geom::Vec2 {
-                    x: -supercube::XOVER_BOARD_WIDTH/2.0,
-                    y: supercube::XOVER_BOARD_HEIGHT/2.0,
+                    x: -supercube::XOVER_BOARD_POST_WIDTH/2.0,
+                    y: supercube::XOVER_BOARD_POST_HEIGHT/2.0,
                 },
                 radius: 4.0
             }
@@ -129,8 +129,8 @@ fn main() -> std::io::Result<()> {
         &dxf_writer.gen_circle(
             geom::Circle {
                center: geom::Vec2 {
-                    x: supercube::XOVER_BOARD_WIDTH/2.0,
-                    y: -supercube::XOVER_BOARD_HEIGHT/2.0,
+                    x: supercube::XOVER_BOARD_POST_WIDTH/2.0,
+                    y: -supercube::XOVER_BOARD_POST_HEIGHT/2.0,
                 },
                 radius: 4.0
             }
@@ -141,8 +141,8 @@ fn main() -> std::io::Result<()> {
         &dxf_writer.gen_circle(
             geom::Circle {
                center: geom::Vec2 {
-                    x: -supercube::XOVER_BOARD_WIDTH/2.0,
-                    y: -supercube::XOVER_BOARD_HEIGHT/2.0,
+                    x: -supercube::XOVER_BOARD_POST_WIDTH/2.0,
+                    y: -supercube::XOVER_BOARD_POST_HEIGHT/2.0,
                 },
                 radius: 4.0
             }

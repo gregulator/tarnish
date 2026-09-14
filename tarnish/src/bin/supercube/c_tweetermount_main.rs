@@ -46,10 +46,15 @@ fn main() -> std::io::Result<()> {
     // Tweeter cutout
     println!(
         "{}",
-        &dxf_writer.gen_circle(
-            geom::Circle {
-               center: utils::origin(),
-               radius: supercube::TWEETER_CUTOUT_RADIUS,
+        utils::gen_circle_with_two_notches(
+            &mut dxf_writer,
+            &utils::CircleWithTwoNotches {
+              hole_circle: geom::Circle {
+                 center: utils::origin(),
+                 radius: supercube::TWEETER_CUTOUT_RADIUS,
+              },
+              notch_length: 11.0,
+              notch_height: 7.0
             }
         )
     );
@@ -66,14 +71,14 @@ fn main() -> std::io::Result<()> {
                         y: supercube::TWEETER_MOUNT_BRIDGE_THICKNESS/2.0,
                     },
                     ur: geom::Vec2 {
-                        x: (supercube::CAVITY_WIDTH - supercube::TWEETER_MOUNT_BRIDGE_THICKNESS)/2.0,
-                        y: (supercube::CAVITY_HEIGHT - supercube::TWEETER_MOUNT_BRIDGE_THICKNESS)/2.0,
+                        x: supercube::CAVITY_WIDTH/2.0,
+                        y: supercube::CAVITY_HEIGHT/2.0,
                     },
                 },
                 ll_round_radius: -supercube::TWEETER_MOUNT_RADIUS,
-                ul_round_radius: 5.0,
+                ul_round_radius: 2.0,
                 ur_round_radius: supercube::CAVITY_ROUNDING,
-                lr_round_radius: 5.0,
+                lr_round_radius: 2.0,
             }
         )
     );
@@ -87,16 +92,16 @@ fn main() -> std::io::Result<()> {
                 rect: geom::Rect{
                     ll: geom::Vec2 {
                         x: supercube::TWEETER_MOUNT_BRIDGE_THICKNESS/2.0,
-                        y: -(supercube::CAVITY_HEIGHT - supercube::TWEETER_MOUNT_BRIDGE_THICKNESS)/2.0,
+                        y: -supercube::CAVITY_HEIGHT/2.0,
                     },
                     ur: geom::Vec2 {
-                        x: (supercube::CAVITY_WIDTH - supercube::TWEETER_MOUNT_BRIDGE_THICKNESS)/2.0,
+                        x: supercube::CAVITY_WIDTH/2.0,
                         y: -supercube::TWEETER_MOUNT_BRIDGE_THICKNESS/2.0,
                     },
                 },
-                ll_round_radius: 5.0,
+                ll_round_radius: 2.0,
                 ul_round_radius: -supercube::TWEETER_MOUNT_RADIUS,
-                ur_round_radius: 5.0,
+                ur_round_radius: 2.0,
                 lr_round_radius: supercube::CAVITY_ROUNDING,
             }
         )
@@ -109,8 +114,8 @@ fn main() -> std::io::Result<()> {
             &utils::RoundedCornerRect {
                 rect: geom::Rect{
                     ll: geom::Vec2 {
-                        x: -(supercube::CAVITY_WIDTH - supercube::TWEETER_MOUNT_BRIDGE_THICKNESS)/2.0,
-                        y: -(supercube::CAVITY_HEIGHT - supercube::TWEETER_MOUNT_BRIDGE_THICKNESS)/2.0,
+                        x: -supercube::CAVITY_WIDTH/2.0,
+                        y: -supercube::CAVITY_HEIGHT/2.0,
                     },
                     ur: geom::Vec2 {
                         x: -supercube::TWEETER_MOUNT_BRIDGE_THICKNESS/2.0,
@@ -118,9 +123,9 @@ fn main() -> std::io::Result<()> {
                     },
                 },
                 ll_round_radius: supercube::CAVITY_ROUNDING,
-                ul_round_radius: 5.0,
+                ul_round_radius: 2.0,
                 ur_round_radius: -supercube::TWEETER_MOUNT_RADIUS,
-                lr_round_radius: 5.0,
+                lr_round_radius: 2.0,
             }
         )
     );
@@ -132,18 +137,35 @@ fn main() -> std::io::Result<()> {
             &utils::RoundedCornerRect {
                 rect: geom::Rect{
                     ll: geom::Vec2 {
-                        x: -(supercube::CAVITY_WIDTH - supercube::TWEETER_MOUNT_BRIDGE_THICKNESS)/2.0,
+                        x: -supercube::CAVITY_WIDTH/2.0,
                         y: supercube::TWEETER_MOUNT_BRIDGE_THICKNESS/2.0,
                     },
                     ur: geom::Vec2 {
                         x: -supercube::TWEETER_MOUNT_BRIDGE_THICKNESS/2.0,
-                        y: (supercube::CAVITY_HEIGHT - supercube::TWEETER_MOUNT_BRIDGE_THICKNESS)/2.0,
+                        y: supercube::CAVITY_HEIGHT/2.0,
                     },
                 },
-                ll_round_radius: 5.0,
+                ll_round_radius: 2.0,
                 ul_round_radius: supercube::CAVITY_ROUNDING,
-                ur_round_radius: 5.0,
+                ur_round_radius: 2.0,
                 lr_round_radius: -supercube::TWEETER_MOUNT_RADIUS,
+            }
+        )
+    );
+
+    // pilot holes
+    println!(
+        "{}",
+        utils::gen_bolt_circle(
+            &mut dxf_writer,
+            utils::BoltCircle {
+                ring_circle: geom::Circle {
+                  center: utils::origin(),
+                  radius: supercube::TWEETER_BOLT_CIRCLE_RADIUS,
+                },
+                num_holes: 4,
+                hole_radius: supercube::PILOT_HOLE_RADIUS,
+                angle_offset: 45.0,
             }
         )
     );

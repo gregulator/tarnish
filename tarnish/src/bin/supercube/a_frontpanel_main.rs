@@ -34,12 +34,12 @@ fn main() -> std::io::Result<()> {
             &mut dxf_writer,
             &utils::RoundedRect {
                 ll: geom::Vec2 {
-                    x: -supercube::OUTER_WIDTH / 2.0,
-                    y: -supercube::OUTER_HEIGHT / 2.0
+                    x: -supercube::OUTER_WIDTH / 2.0 - supercube::VENEER_WIDTH,
+                    y: -supercube::OUTER_HEIGHT / 2.0 - supercube::VENEER_WIDTH
                 },
                 ur: geom::Vec2 {
-                    x: supercube::OUTER_WIDTH / 2.0,
-                    y: supercube::OUTER_HEIGHT / 2.0
+                    x: supercube::OUTER_WIDTH / 2.0 + supercube::VENEER_WIDTH,
+                    y: supercube::OUTER_HEIGHT / 2.0 + supercube::VENEER_WIDTH
                 },
                 round_radius: supercube::OUTER_ROUNDING
             }
@@ -66,6 +66,45 @@ fn main() -> std::io::Result<()> {
         )
     );
 
+    /*
+    // checking CUTOUTS
+    println!(
+        "{}",
+        utils::gen_rounded_rect(
+            &mut dxf_writer,
+            &utils::RoundedRect {
+                ll: geom::Vec2 {
+                    x: -supercube::CAVITY_WIDTH / 2.0,
+                    y: -supercube::CAVITY_HEIGHT / 2.0
+                },
+                ur: geom::Vec2 {
+                    x: supercube::CAVITY_WIDTH / 2.0,
+                    y: supercube::CAVITY_HEIGHT / 2.0
+                },
+                round_radius: supercube::CAVITY_ROUNDING
+            }
+        )
+    );
+    // checking OUTLINE SHAPE
+    println!(
+        "{}",
+        utils::gen_rounded_rect(
+            &mut dxf_writer,
+            &utils::RoundedRect {
+                ll: geom::Vec2 {
+                    x: -supercube::OUTER_WIDTH / 2.0,
+                    y: -supercube::OUTER_HEIGHT / 2.0
+                },
+                ur: geom::Vec2 {
+                    x: supercube::OUTER_WIDTH / 2.0,
+                    y: supercube::OUTER_HEIGHT / 2.0
+                },
+                round_radius: supercube::OUTER_ROUNDING
+            }
+        )
+    );
+    */
+
     // Screw holes - should be countersunk
     println!(
         "{}",
@@ -77,7 +116,7 @@ fn main() -> std::io::Result<()> {
                   radius: supercube::FRONT_PANEL_BOLT_CIRCLE_RADIUS,
                 },
                 num_holes: 4,
-                hole_radius: 5.0,
+                hole_radius: 3.0,
                 angle_offset: 45.0,
             }
         )

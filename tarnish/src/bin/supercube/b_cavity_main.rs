@@ -61,6 +61,22 @@ fn main() -> std::io::Result<()> {
         )
     );
 
+    // pilot holes
+    println!(
+        "{}",
+        utils::gen_bolt_circle(
+            &mut dxf_writer,
+            utils::BoltCircle {
+                ring_circle: geom::Circle {
+                  center: utils::origin(),
+                  radius: supercube::FRONT_PANEL_BOLT_CIRCLE_RADIUS,
+                },
+                num_holes: 4,
+                hole_radius: supercube::PILOT_HOLE_RADIUS,
+                angle_offset: 45.0,
+            }
+        )
+    );
     println!("{}", dxf::ENTITIES_FOOTER);
     println!("{}", dxf::FOOTER);
     Ok(())
